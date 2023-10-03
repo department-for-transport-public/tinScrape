@@ -3,6 +3,8 @@
 #' @param url URL of the web page to scrape urls from. Defaults to the gov.uk stats homepage
 #' @return a table containing three columns, the collection url, the document url and the time of collection
 #' @export
+#' @import dplyr
+#' @importFrom purrr map map_df
 
 extract_table_urls <- function(url = "https://www.gov.uk/government/organisations/department-for-transport/about/statistics"){
   # put together full list of tables

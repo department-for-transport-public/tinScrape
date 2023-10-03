@@ -1,16 +1,8 @@
-library(dplyr)
-library(stringr)
-library(rvest)
-library(lubridate)
-library(data.table)
-library(bigrquery)
-
-
 #' For a provided url, reads in the page and extracts all the link addresses from that page
 #' @name scrape_links
 #' @param url URL of the web page to scrape urls from
 #' @importFrom xml read_html
-#' @importFrom
+#' @importFrom rvest html_nodes html_attr
 
 scrape_links <- function(url){
   # Create an html document from the url
@@ -50,6 +42,7 @@ collect_collections <- function(url){
 #' For a provided url, returns links associated with uploaded statistical publication files
 #' @name collect_links
 #' @param url URL of the web page to scrape urls from
+#' @importFrom purrr map_vec
 
 collect_links <- function(url){
   # use the unique number to identify the URL to be used for each collection
@@ -74,6 +67,9 @@ collect_links <- function(url){
 #' For a provided url, returns urls of uploaded ODS and CSV files associated with statistical publications
 #' @name scrape_tables
 #' @param url URL of the web page to scrape urls from
+#' @importFrom purrr map
+
+
 scrape_tables <- function(url){
 
   links <- purrr::map(.x = url,
