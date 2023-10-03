@@ -1,7 +1,7 @@
 #' For a provided url, reads in the page and extracts all the link addresses from that page
 #' @name scrape_links
 #' @param url URL of the web page to scrape urls from
-#' @importFrom xml read_html
+#' @importFrom xml2 read_html
 #' @importFrom rvest html_nodes html_attr
 
 scrape_links <- function(url){
@@ -27,8 +27,10 @@ scrape_links <- function(url){
 collect_collections <- function(url){
   # get hyperlinks to DfT topic areas found on the Statistics at DfT webpage,
   # fitering for collections only
-  collections <-  scrape_links(stats_url)[
-    grepl("statistics/transport|statistics/developing-faster|^https://www.gov.uk/government/collections/+", scrape_links(stats_url))] %>%
+  collections <-  scrape_links(url)
+
+  collections <- collections[
+    grepl("statistics/transport|statistics/developing-faster|^https://www.gov.uk/government/collections/+", collections)] %>%
     ##Convert to list
     as.list()
 
