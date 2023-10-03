@@ -24,7 +24,7 @@ extract_table_urls <- function(url = "https://www.gov.uk/government/organisation
                   upload_id = as.numeric(gsub("/.*", "", upload_id))) %>%
     ##Group and slice to keep the highest upload no
     dplyr::group_by(file_name) %>%
-    dplyr::arrange(desc(upload_no)) %>%
+    dplyr::arrange(desc(upload_id)) %>%
     dplyr::slice(1L) %>%
     ##Add process time
     dplyr::mutate(time_of_check = Sys.time()) %>%
