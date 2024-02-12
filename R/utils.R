@@ -1,3 +1,9 @@
+##Convert to numerics without warnings
+as.numeric.silent <- function(x){
+  suppressWarnings(as.numeric(x))
+}
+
+
 #' For a provided url, reads in the page and extracts all the link addresses from that page
 #' @name scrape_links
 #' @param url URL of the web page to scrape urls from

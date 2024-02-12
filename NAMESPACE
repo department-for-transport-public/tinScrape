@@ -2,6 +2,7 @@
 
 export(extract_table_urls)
 import(dplyr)
+importFrom(Rmpfr,mpfr)
 importFrom(purrr,map)
 importFrom(purrr,map_df)
 importFrom(purrr,map_vec)
