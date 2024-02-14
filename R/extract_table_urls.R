@@ -38,6 +38,8 @@ extract_table_urls <- function(url = "https://www.gov.uk/government/organisation
     dplyr::slice(1L) %>%
     ##Add process time
     dplyr::mutate(time_of_check = Sys.time()) %>%
+    #Simplify the upload ID to a small integer
+    dplyr::mutate(upload_id = as.integer(upload_id/1e24)) %>%
     dplyr::rename(collection_url = collection, doc_url = urls)
 }
 
