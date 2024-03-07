@@ -67,8 +67,7 @@ collect_links <- function(url){
                  .f = ~ifelse(!grepl("^https", .x,),
                               paste0("https://www.gov.uk", .x),
                               .x))
-
-
+  
 }
 
 
@@ -88,5 +87,15 @@ scrape_tables <- function(url){
   tibble(
     urls = links[grepl(".ods$|.csv$", links)])
 
-}
+  }
 
+# capitalise first letter of string
+upper_case <- function(x){
+  
+  # extract first letter of string, and make capital
+  paste(toupper(substring(x, 1, 1)),
+        # make subsequent letters lowercase
+        tolower(substring(x, 2, nchar(x))),
+        sep = "")
+  
+}
