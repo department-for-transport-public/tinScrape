@@ -40,6 +40,12 @@ extract_table_urls <- function(url = "https://www.gov.uk/government/organisation
     dplyr::mutate(time_of_check = Sys.time()) %>%
     #Simplify the upload ID to a small integer
     dplyr::mutate(upload_id = as.integer(upload_id/1e24)) %>%
-    dplyr::rename(collection_url = collection, doc_url = urls)
+    dplyr::rename(collection_url = collection, doc_url = urls) %>% 
+    dplyr::mutate(collection1 = stringr::str_to_sentence(
+      stringr::str_replace_all(gsub("^.*[/]", "", collection_url), "-", " ")),
+      collection = case_when(stringr::str_detect(collection1, "covid") ~ 
+                               stringr::str_replace(collection1, "covid 19", 
+                                                    "(COVID-19)"),
+                             TRUE ~ collection1)) %>% 
+    dplyr::select(-collection1)
 }
-
