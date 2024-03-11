@@ -9,7 +9,7 @@
 
 extract_table_urls <- function(url = "https://www.gov.uk/government/organisations/department-for-transport/about/statistics"){
   # put together full list of tables
-  data_raw <- purrr::map(.x = collect_collections(url),
+  purrr::map(.x = collect_collections(url),
              .f = collect_links) %>%
     purrr::map_df(.f = scrape_tables,
                   .id = "collection") %>%
@@ -40,9 +40,8 @@ extract_table_urls <- function(url = "https://www.gov.uk/government/organisation
     dplyr::mutate(time_of_check = Sys.time()) %>%
     #Simplify the upload ID to a small integer
     dplyr::mutate(upload_id = as.integer(upload_id/1e24)) %>%
-    dplyr::rename(collection_url = collection, doc_url = urls) %>% 
-    dplyr::mutate(collection1 = upper_case(gsub("^.*[/]", "", collection_url)),
-                  collection2 = upper_case(gsub("-", " ", collection1)),
-                  collection = gsub("covid 19", "(COVID-19)", collection2)) %>% 
-    dplyr::select(-collection1, -collection2)
+    dplyr::rename(collection_url = collection, doc_url = urls) %>%
+    dplyr::mutate(collection_url = upper_case(gsub("^.*[/]", "", collection_url)),
+                  collection_url = gsub("-", " ", collection_url),
+                  collection_url = gsub("covid 19", "(COVID-19)", collection_url))
 }
