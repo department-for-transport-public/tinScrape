@@ -19,10 +19,12 @@ scrape_links <- function(url){
     # refers to java script where hyperlinks are indicated with
     # an "a" at the start of the text
     rvest::html_nodes("a") %>%
+     ##Find all hyperlinks, drop anything that's a related link
+    rvest::html_nodes(xpath =
+                        "../a[not(contains(@class, 'gem-c-related'))]") %>%
     # refers to java script, specifically the attribute
     # information, which is actual hyperlink
     rvest::html_attr("href")
-  # # renames the link_ and url_ variables to link and url respectively
 }
 
 
@@ -36,14 +38,15 @@ collect_collections <- function(url){
   collections <-  scrape_links(url)
 
   collections <- collections[
-    grepl("statistics/transport|statistics/developing-faster|^https://www.gov.uk/government/collections/+", collections)] %>%
+    grepl("(statistics[/](t|d))|collections[/]", collections)] %>%
+    unique() %>%
     ##Convert to list
     as.list()
 
   #Name the list with the names of the collections
   names(collections) <- unlist(collections)
 
-  collections
+  return(collections)
 }
 
 
@@ -67,7 +70,7 @@ collect_links <- function(url){
                  .f = ~ifelse(!grepl("^https", .x,),
                               paste0("https://www.gov.uk", .x),
                               .x))
-  
+
 }
 
 
@@ -91,11 +94,11 @@ scrape_tables <- function(url){
 
 # capitalise first letter of string
 upper_case <- function(x){
-  
+
   # extract first letter of string, and make capital
   paste(toupper(substring(x, 1, 1)),
         # make subsequent letters lowercase
         tolower(substring(x, 2, nchar(x))),
         sep = "")
-  
+
 }
