@@ -41,7 +41,7 @@ extract_table_urls <- function(url = "https://www.gov.uk/government/organisation
     #Simplify the upload ID to a small integer
     dplyr::mutate(upload_id = as.integer(upload_id/1e24)) %>%
     dplyr::rename(collection_url = collection, doc_url = urls) %>%
-    dplyr::mutate(collection_url = upper_case(gsub("^.*[/]", "", collection_url)),
-                  collection_url = gsub("-", " ", collection_url),
-                  collection_url = gsub("covid 19", "(COVID-19)", collection_url))
+    dplyr::mutate(collection = upper_case(gsub("^.*[/]", "", collection_url)),
+                  collection = gsub("-", " ", collection),
+                  collection = gsub("covid 19", "(COVID-19)", collection))
 }
