@@ -138,7 +138,3 @@ scrape_method <- function(url){
 
 }
 
-
-purrr::map(.x = collect_collections(url),
-           .f = collect_links)
-
