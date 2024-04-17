@@ -22,8 +22,7 @@ scrape_links <- function(url){
      ##Find all hyperlinks, drop anything that's a related link
     rvest::html_nodes(xpath =
                         "../a[not(contains(@class, 'gem-c-related'))]") %>%
-    # refers to java script, specifically the attribute
-    # information, which is actual hyperlink
+    # Get the actual hyperlink attribute
     rvest::html_attr("href")
 }
 
@@ -102,3 +101,44 @@ upper_case <- function(x){
         sep = "")
 
 }
+
+
+##Scrape methodology notes for publications
+scrape_method <- function(url){
+
+  webpage <- xml2::read_html(url)
+
+  # Extract the URLs that are govuk-links
+  links <- webpage %>%
+    ##Drop anything that's a related link or a footer
+    rvest::html_nodes(xpath =
+                        "//a[not(contains(@class, 'gem-c-related')) and
+                      not(contains(@class, 'govuk-footer'))]")
+
+
+  ##Find the information link
+  link_names <- links %>%
+    rvest::html_text()
+
+  ##Return the whole links for the information ones
+  links <- links[grep("information|technical|guidance", link_names, ignore.case = TRUE)] %>%
+    # Get the actual hyperlink attribute
+    rvest::html_attr("href")
+
+  ##Drop anything that starts with a # or is the guidance and regulation bit
+  links <- links[!grepl("^#|search[/]", links)]
+
+  ##Append if needed
+  tibble(
+    methodology = purrr::map_vec(.x = links,
+                 .f = ~ifelse(!grepl("^https", .x,),
+                              paste0("https://www.gov.uk", .x),
+                              .x))) %>%
+    unique()
+
+}
+
+
+purrr::map(.x = collect_collections(url),
+           .f = collect_links)
+
