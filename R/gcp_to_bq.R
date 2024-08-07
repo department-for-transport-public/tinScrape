@@ -1,8 +1,7 @@
-#' For a provided DfT published table code, tidy the data that is in GCP and
-#' move to BigQuery
+#' To tidy published DfT data, stored in GCP, and move to BigQuery
 #' @name gcp_to_bq
-#' @param file_name DfT code for published table
-#' @return a tidied, machine readable version of the table in BQ
+#' @param file_name DfT code for published table.
+#' @return A tidied, machine readable version of the table, in a long format, in BQ.
 #' @export
 #' @import dplyr
 #' @importFrom purrr map map_df
