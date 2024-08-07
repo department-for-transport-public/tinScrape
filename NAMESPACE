@@ -3,6 +3,7 @@
 export(extract_table_urls)
 export(scrape_odd_methodology)
 export(tidied_df)
+export(year_column_check)
 import(dplyr)
 importFrom(Rmpfr,mpfr)
 importFrom(dplyr,filter)
