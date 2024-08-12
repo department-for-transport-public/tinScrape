@@ -2,7 +2,7 @@
 #' @name create_bq_table
 #' @param x Name of dataset
 #' @param name Name of workbook
-#' @param file_name Name of worksheet
+#' @param sheet_name Name of worksheet
 #' @return The creation and uploading of a tidied dataset in BigQuery
 #' @export
 #' @import dplyr
@@ -10,21 +10,23 @@
 #' @import googleCloudStorageR
 #' @importFrom purrr map map_df map_vec
 
-create_bq_table <- function(x, name, file_name){
+create_bq_table <- function(x, name, sheet_name){
   
-  file_name <- gsub("-", "_", file_name, fixed = TRUE)
-  file_name <- gsub("\\\\.*", "", file_name)
+  sheet_name <- gsub("-", "_", sheet_name, fixed = TRUE)
+  sheet_name <- gsub("\\\\.*", "", sheet_name)
   
   ##Check if dataset exists and create if not
-  if(!bq_dataset_exists(paste0("dft-stats-diss-dev.", file_name))){
-    bq_dataset_create(paste0("dft-stats-diss-dev.", file_name),
+  if(!bq_dataset_exists(paste0("dft-stats-diss-dev.", sheet_name))){
+    bq_dataset_create(paste0("dft-stats-diss-dev.", sheet_name),
                       location = "europe-west2")
+    
+    message("Dataset ", paste0("dft-stats-diss-dev.", sheet_name), " created")
   }
   
   ##Temp object from x
   data <- x
   ##Create table name
-  table_name <- paste("dft-stats-diss-dev", file_name, name, sep = ".")
+  table_name <- paste("dft-stats-diss-dev", sheet_name, name, sep = ".")
   
   ##Delete the table if it already exists and the schema doesn't match
   if(bq_table_exists(table_name)){
