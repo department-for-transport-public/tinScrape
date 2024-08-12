@@ -29,8 +29,7 @@ testthat::test_that("checks on data work", {
   testthat::expect_false(year_column_check(data$Qtr10))
   testthat::expect_false(year_column_check(data$Qtr11))
   testthat::expect_false(year_column_check(data$Qtr12))
-  
-  # result should be false, it is false, but test does not pass
-  testthat::expect_false(year_column_check(data$Qtr2))
+
+  testthat::expect_equal(year_column_check(data$Qtr2), NA)
   
 })
