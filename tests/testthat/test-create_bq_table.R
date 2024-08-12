@@ -13,7 +13,7 @@ local_mocked_bindings(
   },
   
   bq_table_fields = function(table_name) {
-    return(data.frame(name = character()))
+    return(bigrquery::as_bq_fields(mtcars))
   },
   
   bq_table_create = function(table_name, schema) {
@@ -26,10 +26,6 @@ local_mocked_bindings(
   
   bq_table_upload = function(table_name, data, create_disposition, write_disposition) {
     return(table_name)
-  },
-  
-  as_bq_fields = function(data) {
-    return(data.frame(name = names(data)))
   }
 )
 
@@ -56,14 +52,16 @@ test_that("create_bq_table messages about dataset if it doesn't exist", {
 })
 
 test_that("create_bq_table warns if schema is changed",{
-
-  expect_warning(create_bq_table(sample_data, "ts0102", "example-file"))
   
-})
+  local_mocked_bindings(
 
-test_that("create_bq_table uploads the data", {
-  table_name <- "dft-stats-diss-dev.example_file.example_table"
+    bq_table_exists = function(table_name) {
+      return(TRUE)
+    }
+
+  )
+
+  expect_warning(create_bq_table(sample_data, "ts0102", "example-file"),
+                 "Schema for dft-stats-diss-dev.example_file.ts0102 changed")
   
-  # Simulate uploading data
-  expect_true(bq_table_upload(table_name, sample_data, create_disposition='CREATE_IF_NEEDED', write_disposition = "WRITE_TRUNCATE"))
 })
