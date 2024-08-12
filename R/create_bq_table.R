@@ -16,9 +16,9 @@ create_bq_table <- function(x, name, file_name){
   file_name <- gsub("\\\\.*", "", file_name)
   
   ##Check if dataset exists and create if not
-  if(!bigrquery::bq_dataset_exists(paste0("dft-stats-diss-dev.", file_name))){
-    bigrquery::bq_dataset_create(paste0("dft-stats-diss-dev.", file_name),
-                                 location = "europe-west2")
+  if(!bq_dataset_exists(paste0("dft-stats-diss-dev.", file_name))){
+    bq_dataset_create(paste0("dft-stats-diss-dev.", file_name),
+                      location = "europe-west2")
   }
   
   ##Temp object from x
