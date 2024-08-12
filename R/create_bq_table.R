@@ -5,9 +5,7 @@
 #' @param sheet_name Name of worksheet
 #' @return The creation and uploading of a tidied dataset in BigQuery
 #' @export
-#' @import dplyr
 #' @import bigrquery
-#' @import googleCloudStorageR
 #' @importFrom purrr map map_df map_vec
 
 create_bq_table <- function(x, name, sheet_name){
