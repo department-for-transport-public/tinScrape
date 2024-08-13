@@ -43,19 +43,14 @@ test_that("gcp_to_bq cleans sheet names", {
 
   expect_named(gcp_to_bq("table1"), c("sheet3", "sheet4"))
 })
-# 
-# test_that("gcp_to_bq handles errors in tidying function gracefully", {
-#   file_name <- "example-file"
-#   sheets_to_r <- list(
-#     sheet1 = data.frame(col1 = 1:3, col2 = letters[1:3]),
-#     sheet2 = "This will cause an error"
-#   )
-#   
-#   safe_tidying <- purrr::possibly(tidied_df, quiet = FALSE)
-#   
-#   tidy_data <- purrr::map(sheets_to_r, safe_tidying)
-#   
-#   expect_type(tidy_data, "list")
-#   expect_true(is.data.frame(tidy_data$sheet1))
-#   expect_null(tidy_data$sheet2) # The error case should return NULL
-# })
+
+test_that("gcp_to_bq handles errors in tidying function gracefully", {
+  local_mocked_bindings(
+    table_to_bq = function(file_name) {
+      return(list("sheet.3!" = data.frame(col1 = 1:3, col2 = letters[1:3]), 
+                  "sheet(4)" = "Error time"))
+    }
+  )
+
+  expect_no_error(gcp_to_bq("table1"))
+})
