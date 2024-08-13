@@ -2,18 +2,16 @@
 % Please edit documentation in R/gcp_to_bq.R
 \name{gcp_to_bq}
 \alias{gcp_to_bq}
-\title{For a provided DfT published table code, tidy the data that is in GCP and
-move to BigQuery}
+\title{To tidy published DfT data, stored in GCP, and move to BigQuery}
 \usage{
 gcp_to_bq(file_name)
 }
 \arguments{
-\item{file_name}{DfT code for published table}
+\item{file_name}{DfT code for published table.}
 }
 \value{
-a tidied, machine readable version of the table in BQ
+A tidied, machine readable version of the table, in a long format, in BQ.
 }
 \description{
-For a provided DfT published table code, tidy the data that is in GCP and
-move to BigQuery
+To tidy published DfT data, stored in GCP, and move to BigQuery
 }

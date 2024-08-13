@@ -3,9 +3,9 @@
 #' @param file_name DfT code for published table.
 #' @return A tidied, machine readable version of the table, in a long format, in BQ.
 #' @export
-#' @import dplyr
 #' @importFrom purrr map map_df
 #' @importFrom Rmpfr mpfr
+#' @importFrom magrittr "%>%"
 
 gcp_to_bq <- function(file_name){
   
