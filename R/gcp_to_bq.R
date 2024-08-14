@@ -33,7 +33,7 @@ gcp_to_bq <- function(file_name){
   
   purrr::map2(.x = tidy_data,
               .y = names(tidy_data),
-              .f = bq_tableizer,
+              .f = create_bq_table,
               # convert any hyphens in the name of the workbook to underscores
               file_name = file_name)
   
