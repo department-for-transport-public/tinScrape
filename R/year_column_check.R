@@ -3,7 +3,6 @@
 #' @param col Name of the variable to check
 #' @return Returns a true or false value as to whether the variable contains year data, and meets the checks included. Checks include if the length of the value is 4, numeric and starts with '19' or '20'.
 #' @export
-#' @import dplyr
 
 year_column_check <- function(col){
   
@@ -22,3 +21,4 @@ year_column_check <- function(col){
   
   return(sum(length_test, class_test, na_test, values_test) == 4)
 }
+ 

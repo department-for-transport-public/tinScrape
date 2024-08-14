@@ -3,10 +3,11 @@
 #' @param data Name of the dataset to tidy, which will be the name of the worksheet in the ODS workbook
 #' @return A tidied, long table that has a value and grouped_var column, and a column stating the date and time of when the dataset was tidied, at a minimum
 #' @export
-#' @import dplyr
+#' @import utils
 #' @importFrom purrr map map_df map_vec
 #' @importFrom stringr str_replace
 #' @importFrom tibble as_tibble
+#' @importFrom dplyr mutate_at mutate_if mutate
 #' @importFrom janitor clean_names
 #' @importFrom tidyr pivot_longer
 
