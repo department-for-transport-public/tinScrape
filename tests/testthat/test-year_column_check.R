@@ -36,7 +36,7 @@ testthat::test_that("year check fails on column containing NA values", {
 testthat::test_that("year checks fail on data before 1900", {
 
   testthat::expect_false(year_column_check(data$Qtr4))
-  testthat::expect_true(year_column_check(data$Qtr9))
+  testthat::expect_false(year_column_check(data$Qtr9))
 
 })
 
