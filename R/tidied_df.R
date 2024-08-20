@@ -41,6 +41,15 @@ tidied_df <- function(data){
   # find the text columns
   df_text_classes <- grep("character", purrr::map(prep_df, class))
 
+  ##Check if any columns are left!
+ if(ncol(prep_df) ==
+    sum(1:ncol(prep_df) %in% c(df_text_classes, year_column), na.rm = TRUE)){
+
+   stop("No columns in correct format for tidying.
+        Please ensure there is at least one numeric column which does not contain a year value")
+
+ }
+
   tidy_df <-
     suppressWarnings(
     prep_df %>%
