@@ -5,20 +5,20 @@
 #' @export
 
 year_column_check <- function(col){
-  
+
   # test if length of values in column are 4
-  length_test <- all(nchar(col) == 4)
-  
+  ##Drop NA values for this as we're not testing that
+  length_test <- all(nchar(na.omit(col)) == 4)
+
   # test if the class of the column is numeric, integer or double
   class_test <- is.numeric(col) | is.integer(col) | is.double(col)
-  
-  # test if there are NA values for all rows. If so, unlikely to be year data
+
+  # test if there are NA values for any rows. If so, unlikely to be year data
   na_test <- all(!is.na(col))
-  
+
   # test to see if the first two characters in all rows of data start with 19
   # or 20, representing 19xx or 20xx values
   values_test <- all(substr(col, 1, 2) %in% c("19", "20"))
-  
+
   return(sum(length_test, class_test, na_test, values_test) == 4)
 }
- 
