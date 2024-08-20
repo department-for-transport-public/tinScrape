@@ -13,13 +13,13 @@
 
 # function to convert ODS table into tidy format
 tidied_df <- function(data){
-  
+
   prep_df <- tibble::as_tibble(data)
-  
+
   ##Remove notes from column names
   names(prep_df) <- stringr::str_replace(
     names(prep_df), "(| )\\[.*\\]", "")
-  
+
   prep_df <- prep_df %>%
     janitor::clean_names(use_make_names = FALSE) %>%
     # remove any mention of " []" text in the table, and their contents
@@ -51,11 +51,11 @@ tidied_df <- function(data){
       values_to = "value"
     ) %>%
     # create variable stating time of last update
-    dplyr::mutate(date_updated = Sys.time())
-  
+    dplyr::mutate(date_updated = Sys.time()))
+
   ##Clean up the column names to exclude characters BQ doesn't accept
   names(tidy_df) <- gsub("[^[:alnum:]]", "_", names(tidy_df))
-  
+
   return(tidy_df)
-  
+
 }
