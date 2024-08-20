@@ -1,4 +1,5 @@
 ##Convert to numerics without warnings
+#' @export
 as.numeric.silent <- function(x){
   suppressWarnings(as.numeric(x))
 }
