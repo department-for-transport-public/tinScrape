@@ -32,22 +32,24 @@ tidied_df <- function(data){
     dplyr::mutate_if(is.integer, as.numeric) %>%
     # remove any mentions of notes and revised/revisions in table
     .[!grepl("note|revis", names(.), ignore.case = TRUE)]
-  
-  
+
+
   # must pass all checks above to be considered to be a year column
-  year_column <- purrr::map_vec(prep_df, year_column_check)
-  
-  year_column <- grep("TRUE", year_column)
-  
-  
-  # find the last text column
+  year_column <- grep("TRUE", purrr::map_vec(prep_df, year_column_check))
+
+
+  # find the text columns
   df_text_classes <- grep("character", purrr::map(prep_df, class))
-  
-  tidy_df <- prep_df %>%
+
+  tidy_df <-
+    suppressWarnings(
+    prep_df %>%
     # change the format of dataframe from wide to long, where all text columns and the year column are excluded
-    tidyr::pivot_longer(cols = -c(df_text_classes, year_column),
-                        names_to = "grouped_var",
-                        values_to = "value") %>%
+    tidyr::pivot_longer(
+      cols = -c(df_text_classes, year_column),
+      names_to = "grouped_var",
+      values_to = "value"
+    ) %>%
     # create variable stating time of last update
     dplyr::mutate(date_updated = Sys.time())
   
