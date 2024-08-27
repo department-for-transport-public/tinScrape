@@ -4,18 +4,19 @@
 #' @return a table containing three columns, the collection url, the document url and the time of collection
 #' @export
 #' @import dplyr
-#' @importFrom purrr map map_df
-#' @importFrom Rmpfr mpfr
+#' @importFrom purrr map_vec
 
 extract_orr_urls <- function(url = "https://dataportal.orr.gov.uk/statistics/usage/passenger-rail-usage/"){
 
-  # Extract the splash page URLs from the landing page
-names =  extract_orr_pages(url) %>%
- ##Extract the actual table links from each of the splash pages and create a table
-    tibble::tibble(
-      file_name = purrr::map_vec(.x = .,
-                                 .f = extract_orr_pages),
-      collection = url) %>%
-  dplyr::rename("table_name" = ".")
-
+    # Extract the splash page URLs from the landing page
+ extract_orr_pages(url) %>%
+   ##Extract the actual table links from each of the splash pages and create a table
+      tibble::tibble(
+        doc_url = purrr::map_vec(.x = .,
+                                   .f = extract_orr_pages),
+        collection_url = url,
+        upload_id = 1) %>%
+    dplyr::rename("file_name" = ".") %>%
+    ##Keep just the name after the final slash for the file name
+    dplyr::mutate(file_name = gsub("(^.*[/])(.*[/]$)", "\\2", file_name))
 }
