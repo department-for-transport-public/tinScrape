@@ -2,6 +2,7 @@
 
 S3method(as.numeric,silent)
 export(create_bq_table)
+export(extract_orr_urls)
 export(extract_table_urls)
 export(gcp_to_bq)
 export(scrape_odd_methodology)
