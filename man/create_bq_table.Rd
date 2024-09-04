@@ -4,14 +4,14 @@
 \alias{create_bq_table}
 \title{For a provided table, create and upload a table to BigQuery}
 \usage{
-create_bq_table(x, name, sheet_name)
+create_bq_table(x, name, file_name)
 }
 \arguments{
 \item{x}{Name of dataset}
 
-\item{name}{Name of workbook}
+\item{name}{Name of sheet in workbook}
 
-\item{sheet_name}{Name of worksheet}
+\item{file_name}{Name of workbook}
 }
 \value{
 The creation and uploading of a tidied dataset in BigQuery
