@@ -4,6 +4,7 @@
 #' @return a table containing three columns, the collection url, the document url and the time of collection
 #' @export
 #' @import dplyr
+#' @importFrom tibble tibble
 #' @importFrom purrr map_vec
 
 extract_orr_urls <- function(url = "https://dataportal.orr.gov.uk/statistics/usage/passenger-rail-usage/"){
