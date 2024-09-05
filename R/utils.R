@@ -141,6 +141,7 @@ scrape_method <- function(url){
 
 ##Extract ORR links from splash pages
 extract_orr_pages <- function(url){
+
   xml2::read_html(url) %>%
     #Return reports section
     rvest::html_nodes(xpath = "//div[contains(@class, 'report')]") %>%

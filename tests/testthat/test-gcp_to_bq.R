@@ -3,7 +3,7 @@ library(purrr)
 
 # Mock functions to avoid actual processing
 local_mocked_bindings(
-  table_to_bq = function(file_name) {
+  gcp_tables_to_list = function(file_name) {
     return(list(sheet1 = data.frame(col1 = 1:3, col2 = letters[1:3]),
                 sheet2 = data.frame(col1 = 4:6, col2 = letters[4:6])))
   },
@@ -13,7 +13,7 @@ local_mocked_bindings(
              dplyr::mutate(col3 = col1 * 2))
   },
 
-  bq_tableizer = function(data, name, file_name) {
+  create_bq_table = function(data, name, file_name) {
 
     return(data)
   }
