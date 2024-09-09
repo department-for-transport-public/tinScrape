@@ -139,3 +139,17 @@ scrape_method <- function(url){
 
 }
 
+##Extract ORR links from splash pages
+extract_orr_pages <- function(url){
+
+  xml2::read_html(url) %>%
+    #Return reports section
+    rvest::html_nodes(xpath = "//div[contains(@class, 'report')]") %>%
+    # Get hyperlinks from reports section
+    rvest::html_nodes(xpath = ".//a") %>%
+    # Get the actual hyperlink attribute
+    rvest::html_attr("href") %>%
+    ##Add full url
+    paste0("https://dataportal.orr.gov.uk", .)
+
+}
