@@ -9,7 +9,7 @@ Authors@R:
 Description: Webscrapes to find all of the relevant tables for the Transport in Numbers project.
 License: MIT + file LICENSE
 Imports:
-    rvest, xml2, dplyr, purrr, Rmpfr, magrittr
+    rvest, xml2, dplyr, purrr, Rmpfr, magrittr, bigrquery
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
