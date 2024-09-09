@@ -1,0 +1,824 @@
+
+
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-N86R56J');
+    </script>
+
+    <link rel="stylesheet" href="/compiled/css/site.css" />
+
+
+
+
+    <link rel="stylesheet" href="/vendor/toastr/build/toastr.min.css" />
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/fc-3.2.5/datatables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
+
+
+
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendor/toastr/build/toastr.min.js"></script>
+    <script src="/vendor/js-cookie/src/js.cookie.js"></script>
+
+
+
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/fc-3.2.5/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
+    <script src="/compiled/js/helpers.js"></script>
+    <script src="/compiled/js/reports.js"></script>
+    <script src="/compiled/js/site-search.js"></script>
+    <script src="/compiled/js/load-status.js"></script>
+    <script src="/compiled/js/cookie-banner.js"></script>
+
+
+            <meta name="keywords" content="volumes, demand, usage, journeys, kilometres, revenue, passenger rail, passenger, sector, ticket type, ticket">
+
+    <title>
+        Passenger rail usage | ORR Data Portal
+    </title>
+
+    <!-- Google Analytics - Global site tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-21748677-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-21748677-2');
+    </script>
+
+</head>
+<body>
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N86R56J"
+                height="0" width="0" style="display:none;visibility:hidden" title="Google Analytics"></iframe>
+    </noscript>
+
+    
+    <div class="cookie-banner d-print-none">
+        <div class="container">
+            <div class="row">
+                <div class="message"><p>We use cookies to improve your experience when viewing our site - feel free to read our <a href="/footer/privacy-notice-and-cookies/" title="Privacy notice &amp; cookies">cookie policy</a>.</p>
+<p>By continuing to use this site, you are condoning the use of these cookies.</p></div>
+                <div class="button-container">
+                    <button type="button" class="success" onclick="dismissCookieBanner()">Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+<div class="container">
+    <header>
+            <div class="site-logo-container">
+
+                <div style="padding: 0px 20px 20px 0px; float: left;">
+                    <a href="/">
+                        <img src="/media/lt1b1shl/orr_2024_logo_small.jpg" alt="orr_2020_logo">
+                    </a>
+                </div>
+
+                <div style="clear: right; position: absolute; bottom: 0; left: 200px;" class="d-print-none">
+                    <span style="color: #702472;">
+                        ORR protects the interests of rail and road users. We are improving the safety, value, and performance of railways and roads, today and in the future.
+                    </span>
+                </div>
+            </div>
+        <div class="col-md-3 d-print-none">
+            <br/>
+        </div>
+        <div class="site-search d-print-none">
+            <button class="info" style="width: 100%;" onclick="window.location='/data-table-catalogue/'">
+                DATA TABLE CATALOGUE
+            </button>
+            <br /><br />
+
+            <form action="/search/" id="formSiteSearch" method="post">
+                <div class="input-group">
+                    <input id="textboxSiteSearch" type="search" placeholder="Search..." aria-label="Site search">
+                    <div class="input-group-append">
+                        <button class="primary outline" type="submit" aria-label="Submit site search">
+                            <i class="search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div id="searchResultsContainer" class="results" style="display: none;"></div>
+        </div>
+    </header>
+</div>
+
+    
+<div class="navbar-container">
+    <nav class="navbar navbar-expand-lg">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="navbar-toggle" aria-hidden="true"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/publication-dates-for-statistics/">
+                                Publication dates for statistics
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1189" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Popular statistics
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown1189">
+                                        <a class="dropdown-item" href="/popular-statistics/busiest-stations-in-britain/">
+                                            Busiest stations in Britain
+                                        </a>
+                                        <a class="dropdown-item" href="/popular-statistics/how-many-trains-arrive-on-time/">
+                                            How many trains arrive on time
+                                        </a>
+                                        <a class="dropdown-item" href="/popular-statistics/how-many-people-use-the-railway/">
+                                            How many people use the railway
+                                        </a>
+                                        <a class="dropdown-item" href="/popular-statistics/complaints-handling/">
+                                            Complaints handling
+                                        </a>
+                                        <a class="dropdown-item" href="/popular-statistics/workforce-and-non-workforce-safety/">
+                                            Workforce and non-workforce safety
+                                        </a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown active">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1196" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Statistics
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown1196">
+                                        <a class="dropdown-item with-submenu">
+                                            Compendia
+                                        </a>
+                                        <div class="dropdown-submenu" >
+                                                <a class="dropdown-item" href="/statistics/compendia/rail-statistics-compendium/">
+                                                    Rail statistics compendium
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/compendia/toc-key-statistics/">
+                                                    TOC key statistics
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/compendia/foi-and-ad-hoc-data-requests/">
+                                                    FOI and ad-hoc data requests
+                                                </a>
+                                        </div>
+                                        <a class="dropdown-item with-submenu active">
+                                            Usage
+                                        </a>
+                                        <div class="dropdown-submenu" >
+                                                <a class="dropdown-item active" href="/statistics/usage/passenger-rail-usage/">
+                                                    Passenger rail usage
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/usage/freight-rail-usage-and-performance/">
+                                                    Freight rail usage and performance
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/usage/regional-rail-usage/">
+                                                    Regional rail usage
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/usage/estimates-of-station-usage">
+                                                    Estimates of station usage
+                                                </a>
+                                        </div>
+                                        <a class="dropdown-item with-submenu">
+                                            Passenger experience
+                                        </a>
+                                        <div class="dropdown-submenu" >
+                                                <a class="dropdown-item" href="/statistics/passenger-experience/delay-compensation-claims/">
+                                                    Delay compensation claims
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/passenger-experience/disabled-persons-railcards/">
+                                                    Disabled Persons Railcards
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/passenger-experience/passenger-rail-service-complaints/">
+                                                    Passenger rail service complaints
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/passenger-experience/passenger-assistance/">
+                                                    Passenger assistance
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/passenger-experience/passenger-satisfaction-complaints-handling/">
+                                                    Passenger satisfaction (complaints handling)
+                                                </a>
+                                        </div>
+                                        <a class="dropdown-item with-submenu">
+                                            Performance
+                                        </a>
+                                        <div class="dropdown-submenu" >
+                                                <a class="dropdown-item" href="/statistics/performance/passenger-rail-performance/">
+                                                    Passenger rail performance
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/performance/p-coded-cancellations/">
+                                                    P-coded cancellations
+                                                </a>
+                                        </div>
+                                        <a class="dropdown-item with-submenu">
+                                            Finance
+                                        </a>
+                                        <div class="dropdown-submenu" >
+                                                <a class="dropdown-item" href="/statistics/finance/rail-fares/">
+                                                    Rail fares
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/finance/rail-industry-finance/">
+                                                    Rail industry finance (UK)
+                                                </a>
+                                        </div>
+                                        <a class="dropdown-item with-submenu">
+                                            Health and safety
+                                        </a>
+                                        <div class="dropdown-submenu" >
+                                                <a class="dropdown-item" href="/statistics/health-and-safety/rail-safety/">
+                                                    Rail safety
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/health-and-safety/occupational-health/">
+                                                    Occupational health
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/health-and-safety/common-safety-indicators/">
+                                                    Common Safety Indicators
+                                                </a>
+                                        </div>
+                                        <a class="dropdown-item with-submenu">
+                                            Infrastructure and emissions
+                                        </a>
+                                        <div class="dropdown-submenu" >
+                                                <a class="dropdown-item" href="/statistics/infrastructure-and-emissions/rail-infrastructure-and-assets/">
+                                                    Rail infrastructure and assets
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/infrastructure-and-emissions/rail-emissions/">
+                                                    Rail emissions
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/infrastructure-and-emissions/asset-condition/">
+                                                    Asset condition
+                                                </a>
+                                        </div>
+                                        <a class="dropdown-item with-submenu">
+                                            External links
+                                        </a>
+                                        <div class="dropdown-submenu" >
+                                                <a class="dropdown-item" href="/statistics/external-links/office-of-rail-and-road/">
+                                                    Office of Rail and Road
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/external-links/other-rail-data/">
+                                                    Other rail data
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/external-links/industry-groups-and-operators/">
+                                                    Industry groups and operators
+                                                </a>
+                                                <a class="dropdown-item" href="/statistics/external-links/government/">
+                                                    Government
+                                                </a>
+                                        </div>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown4051" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                RIDDOR
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown4051">
+                                        <a class="dropdown-item" href="/riddor/guidance-on-reporting-riddor-incidents/">
+                                            Guidance on reporting RIDDOR incidents
+                                        </a>
+                                        <a class="dropdown-item" href="/riddor/submit-new-incident/">
+                                            Submit new incident
+                                        </a>
+                                        <a class="dropdown-item" href="/riddor/previously-submitted-incidents/">
+                                            Previously submitted incidents
+                                        </a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contact-us/">
+                                Contact us
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1165" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Account
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown1165">
+                                        <a class="dropdown-item" href="/account/external/">
+                                            External login
+                                        </a>
+                                        <a class="dropdown-item" href="/account/internal/">
+                                            ORR login
+                                        </a>
+                            </div>
+                        </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://www.orr.gov.uk/">
+                        ORR main site
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<script type="text/javascript">
+    $('.dropdown-item.with-submenu').on('click', function (e) {
+        e.stopPropagation();
+        $(this).next('.dropdown-submenu').slideToggle();
+    });
+</script>
+
+
+
+    <main>
+        
+
+    <div class="page-container d-print-none">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                            <a href="/">
+                                Home
+                            </a>
+                    </li>
+                    <li class="breadcrumb-item">
+Statistics                    </li>
+                    <li class="breadcrumb-item">
+Usage                    </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Passenger rail usage
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+
+            <div class="page-container">
+                <div class="page-with-subnav">
+                    <div class="subnav-container d-print-none">
+                        
+
+<ul class="subnav">
+            <li class="nav-item dropdown">
+                <a class="nav-link with-submenu">
+                    Compendia
+                </a>
+                <div class="dropdown-submenu" style=display:none>
+                        <a class="nav-link" href="/statistics/compendia/rail-statistics-compendium/">
+                            Rail statistics compendium
+                        </a>
+                        <a class="nav-link" href="/statistics/compendia/toc-key-statistics/">
+                            TOC key statistics
+                        </a>
+                        <a class="nav-link" href="/statistics/compendia/foi-and-ad-hoc-data-requests/">
+                            FOI and ad-hoc data requests
+                        </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown active">
+                <a class="nav-link with-submenu">
+                    Usage
+                </a>
+                <div class="dropdown-submenu" >
+                        <a class="nav-link active" href="/statistics/usage/passenger-rail-usage/">
+                            Passenger rail usage
+                        </a>
+                        <a class="nav-link" href="/statistics/usage/freight-rail-usage-and-performance/">
+                            Freight rail usage and performance
+                        </a>
+                        <a class="nav-link" href="/statistics/usage/regional-rail-usage/">
+                            Regional rail usage
+                        </a>
+                        <a class="nav-link" href="/statistics/usage/estimates-of-station-usage">
+                            Estimates of station usage
+                        </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link with-submenu">
+                    Passenger experience
+                </a>
+                <div class="dropdown-submenu" style=display:none>
+                        <a class="nav-link" href="/statistics/passenger-experience/delay-compensation-claims/">
+                            Delay compensation claims
+                        </a>
+                        <a class="nav-link" href="/statistics/passenger-experience/disabled-persons-railcards/">
+                            Disabled Persons Railcards
+                        </a>
+                        <a class="nav-link" href="/statistics/passenger-experience/passenger-rail-service-complaints/">
+                            Passenger rail service complaints
+                        </a>
+                        <a class="nav-link" href="/statistics/passenger-experience/passenger-assistance/">
+                            Passenger assistance
+                        </a>
+                        <a class="nav-link" href="/statistics/passenger-experience/passenger-satisfaction-complaints-handling/">
+                            Passenger satisfaction (complaints handling)
+                        </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link with-submenu">
+                    Performance
+                </a>
+                <div class="dropdown-submenu" style=display:none>
+                        <a class="nav-link" href="/statistics/performance/passenger-rail-performance/">
+                            Passenger rail performance
+                        </a>
+                        <a class="nav-link" href="/statistics/performance/p-coded-cancellations/">
+                            P-coded cancellations
+                        </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link with-submenu">
+                    Finance
+                </a>
+                <div class="dropdown-submenu" style=display:none>
+                        <a class="nav-link" href="/statistics/finance/rail-fares/">
+                            Rail fares
+                        </a>
+                        <a class="nav-link" href="/statistics/finance/rail-industry-finance/">
+                            Rail industry finance (UK)
+                        </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link with-submenu">
+                    Health and safety
+                </a>
+                <div class="dropdown-submenu" style=display:none>
+                        <a class="nav-link" href="/statistics/health-and-safety/rail-safety/">
+                            Rail safety
+                        </a>
+                        <a class="nav-link" href="/statistics/health-and-safety/occupational-health/">
+                            Occupational health
+                        </a>
+                        <a class="nav-link" href="/statistics/health-and-safety/common-safety-indicators/">
+                            Common Safety Indicators
+                        </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link with-submenu">
+                    Infrastructure and emissions
+                </a>
+                <div class="dropdown-submenu" style=display:none>
+                        <a class="nav-link" href="/statistics/infrastructure-and-emissions/rail-infrastructure-and-assets/">
+                            Rail infrastructure and assets
+                        </a>
+                        <a class="nav-link" href="/statistics/infrastructure-and-emissions/rail-emissions/">
+                            Rail emissions
+                        </a>
+                        <a class="nav-link" href="/statistics/infrastructure-and-emissions/asset-condition/">
+                            Asset condition
+                        </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link with-submenu">
+                    External links
+                </a>
+                <div class="dropdown-submenu" style=display:none>
+                        <a class="nav-link" href="/statistics/external-links/office-of-rail-and-road/">
+                            Office of Rail and Road
+                        </a>
+                        <a class="nav-link" href="/statistics/external-links/other-rail-data/">
+                            Other rail data
+                        </a>
+                        <a class="nav-link" href="/statistics/external-links/industry-groups-and-operators/">
+                            Industry groups and operators
+                        </a>
+                        <a class="nav-link" href="/statistics/external-links/government/">
+                            Government
+                        </a>
+                </div>
+            </li>
+</ul>
+
+<script type="text/javascript">
+    $('.nav-link.with-submenu').on('click', function (e) {
+        $(this).next('.dropdown-submenu').slideToggle();
+    });
+</script>
+
+                    </div>
+                    <div class="content-container">
+                        
+
+<div class="page-container statistics">
+    <h1>
+        Passenger rail usage
+    </h1>
+
+<p style="text-align: center;"><a rel="noopener" href="https://www.statisticsauthority.gov.uk" target="_blank" title="UK Statistic Authority"><img style="width: 100px; height: 100px; float: right;" src="/media/caylheul/accredited_official_statistics.png?width=100&amp;height=100" alt="Accredited Official Statistics logo"></a></p>
+<p style="text-align: left;">Quarterly statistics reporting the volume of passenger journeys, kilometres and revenue on the mainline network in Great Britain. Long-running time series on passenger journeys (Table 1220) and passenger kilometres (Table 1230) are updated annually.</p>
+<p style="text-align: left;">Data is shown by financial year quarter: Q1 is April to June; Q2 is July to September; Q3 is October to December; and Q4 is January to March.</p>
+<p style="text-align: left;">For details on how these statistics are compiled, please see our <a rel="noopener" href="/media/1234/passenger-usage-quality-report.pdf" target="_blank" title="Passenger rail usage quality report">Passenger rail usage quality and methodology report</a> and for information on any revisions, please see our <a href="/footer/revisions-log/" title="Revisions log">Revisions log</a>.</p>
+<p style="text-align: left;">Data and reports that include previous statistical releases on Passenger rail usage can be found on the <a rel="noopener" href="https://webarchive.nationalarchives.gov.uk/20190603113708tf_/https://orr.gov.uk/statistics/published-stats/previous-data" target="_blank">National Archives</a>.</p>
+<p style="text-align: left;">Our statistical practice is regulated by the Office for Statistics Regulation (OSR).</p>
+<p style="text-align: left;"><span>If you have any questions or feedback on these statistics, please contact </span><a href="mailto:rail.stats@orr.gov.uk">rail.stats@orr.gov.uk</a></p>
+<p style="text-align: left;"> </p>
+    
+
+
+
+
+
+    <div class="headline-content">
+            <div class="statistical-release">
+                <h2>Latest statistical release</h2>
+                <div class="card">
+                    <a href="/media/15nga1q4/passenger-rail-usage-jan-mar-2024.pdf" target="_blank">
+                        <img class="card-img-top" src="/media/15nga1q4/passenger-rail-usage-jan-mar-2024.pdf?preview=true" alt="Passenger rail usage, January to March 2024" width="210mm" height="297mm" />
+
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="/media/15nga1q4/passenger-rail-usage-jan-mar-2024.pdf" target="_blank">
+                                Passenger rail usage, January to March 2024
+                            </a>
+                        </h5>
+                        <p class="card-text">
+                            Date published: 13 Jun 2024
+                            <br />
+                            Date next published: 03 Oct 2024
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="key-results">
+                <h2>Key results</h2>
+                <ul>
+                        <li>A total of 1.61 billion journeys were made by rail passengers in Great Britain in the latest year (1 April 2023 to 31 March 2024). This is a 16% increase on the 1.38 billion journeys in the previous year (1 April 2022 to 31 March 2023). </li>
+                        <li>There were 405 million journeys in the latest quarter (1 January to 31 March 2024). This is a 13% increase on the 359 million journeys made in the same quarter in the previous year (1 January to 31 March 2023).</li>
+                        <li>Total passenger revenue was &#xA3;10.3 billion in the latest year. This is a 13% increase on the &#xA3;9.1 billion in the previous year (when adjusted for inflation).</li>
+                        <li>A total of 60.1 billion passenger kilometres were travelled in the latest year. This is a 13% increase on the 53.0 billion passenger kilometres travelled in the previous year.</li>
+                </ul>
+            </div>
+    </div>
+        <iframe class="report power-bi" src="https://app.powerbi.com/view?r=eyJrIjoiOGU3YjNmNTgtY2IxNi00NDg3LWEyNGQtZTVlNTdiYjlhZGU4IiwidCI6IjIzMjM3OTk2LTdmM2EtNDM5NC04MGY1LTQ2MGNiYzA3NjEzYiJ9" title="Power BI Report"></iframe>
+        <div class="all-content">
+            <div class="statistical-releases">
+                <h3>Previous statistical releases</h3>
+                    <ul>
+                                <li>
+                                    <h5>2023-24</h5>
+                                    <ul>
+                                            <li>
+                                                <a href="/media/v1ilmjut/passenger-rail-usage-oct-dec-2023.pdf" target="_blank">
+                                                    Passenger rail usage, October to December 2023
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/media/bbrpxkon/passenger-rail-usage-jul-sep-2023.pdf" target="_blank">
+                                                    Passenger rail usage, July to September 2023
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/media/ip3ayian/passenger-rail-usage-apr-jun-2023.pdf" target="_blank">
+                                                    Passenger rail usage, April to June 2023
+                                                </a>
+                                            </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <h5>2022-23</h5>
+                                    <ul>
+                                            <li>
+                                                <a href="/media/2207/passenger-rail-usage-jan-mar-2023.pdf" target="_blank">
+                                                    Passenger rail usage, January to March 2023
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/media/2190/passenger-rail-usage-oct-dec-2022.pdf" target="_blank">
+                                                    Passenger rail usage, October to December 2022
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/media/2167/passenger-rail-usage-jul-sep-2022.pdf" target="_blank">
+                                                    Passenger rail usage, July to September 2022
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/media/2124/passenger-rail-usage-apr-jun-2022.pdf" target="_blank">
+                                                    Passenger rail usage, April to June 2022
+                                                </a>
+                                            </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <h5>2021-22</h5>
+                                    <ul>
+                                            <li>
+                                                <a href="/media/2064/passenger-rail-usage-jan-mar-2022.pdf" target="_blank">
+                                                    Passenger rail usage, January to March 2022
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/media/2050/passenger-rail-usage-2021-22-q3.pdf" target="_blank">
+                                                    Passenger rail usage, October to December 2021
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/media/2041/passenger-rail-usage-2021-22-q2.pdf" target="_blank">
+                                                    Passenger rail usage, July to September 2021
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/media/2010/passenger-rail-usage-2021-22-q1.pdf" target="_blank">
+                                                    Passenger rail usage, April to June 2021
+                                                </a>
+                                            </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <h5>2020-21</h5>
+                                    <ul>
+                                            <li>
+                                                <a href="/media/1946/passenger-rail-usage-2020-21-q4.pdf" target="_blank">
+                                                    Passenger rail usage, January to March 2021
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/media/1936/passenger-rail-usage-2020-21-q3.pdf" target="_blank">
+                                                    Passenger rail usage, October to December 2020
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/media/1920/passenger-rail-usage-2020-21-q2.pdf" target="_blank">
+                                                    Passenger rail usage, July to September 2020
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/media/1836/passenger-rail-usage-2020-21-q1.pdf" target="_blank">
+                                                    Passenger rail usage, April to June 2020
+                                                </a>
+                                            </li>
+                                    </ul>
+                                </li>
+                    </ul>
+            </div>
+
+            <div class="reports">
+                <h3>Data tables</h3>
+                    <ul>
+                                <li>
+                                    <h5>Quarterly</h5>
+                                    <ul>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1221-passenger-journeys-by-sector/">
+                                                    Table 1221 - Passenger journeys by sector
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1222-passenger-journeys-by-ticket-type/">
+                                                    Table 1222 - Passenger journeys by ticket type
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1223-passenger-journeys-by-operator/">
+                                                    Table 1223 - Passenger journeys by operator
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1231-passenger-kilometres-by-sector/">
+                                                    Table 1231 - Passenger kilometres by sector
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1232-passenger-kilometres-by-ticket-type/">
+                                                    Table 1232 - Passenger kilometres by ticket type
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1233-passenger-kilometres-by-operator/">
+                                                    Table 1233 - Passenger kilometres by operator
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1211-passenger-revenue-by-sector/">
+                                                    Table 1211 - Passenger revenue by sector
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1212-passenger-revenue-by-ticket-type/">
+                                                    Table 1212 - Passenger revenue by ticket type
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1210-revenue-per-passenger-kilometres-and-per-passenger-journey/">
+                                                    Table 1210 - Revenue per passenger kilometres and per passenger journey
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1243-passenger-train-kilometres-by-operator/">
+                                                    Table 1243 - Passenger train kilometres by operator
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1253-passenger-vehicle-kilometres-by-operator/">
+                                                    Table 1253 - Passenger vehicle kilometres by operator
+                                                </a>
+                                            </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <h5>Annual</h5>
+                                    <ul>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1220-passenger-journeys/">
+                                                    Table 1220 - Passenger journeys
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/statistics/usage/passenger-rail-usage/table-1230-passenger-kilometres/">
+                                                    Table 1230 - Passenger kilometres
+                                                </a>
+                                            </li>
+                                    </ul>
+                                </li>
+                    </ul>
+            </div>
+        </div>
+</div>
+
+                    </div>
+                </div>
+            </div>
+    </main>
+
+
+    
+<footer class="d-print-none">
+    <div class="categories-container">
+            <div class="categories">
+                        <div class="category">
+                            <h5>About this site</h5>
+                            <ul>
+                                    <li>
+                                        <a href="/about-this-site/privacy-notice-and-cookies">
+                                            Privacy notice and cookies
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/about-this-site/accessibility-terms-and-conditions">
+                                            Accessibility terms and conditions
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/about-this-site/sitemap">
+                                            Sitemap
+                                        </a>
+                                    </li>
+                            </ul>
+                        </div>
+                        <div class="category">
+                            <h5>About ORR</h5>
+                            <ul>
+                                    <li>
+                                        <a href="/about-orr/freedom-of-information">
+                                            Freedom of information
+                                        </a>
+                                    </li>
+                            </ul>
+                        </div>
+                        <div class="category">
+                            <h5>Other data</h5>
+                            <ul>
+                                    <li>
+                                        <a href="/other-data/orr-archived-data">
+                                            ORR archived data
+                                        </a>
+                                    </li>
+                            </ul>
+                        </div>
+                        <div class="category">
+                            <h5>Contact</h5>
+                            <ul>
+                                    <li>
+                                        <a href="/contact/complaints-and-general-enquiries">
+                                            Complaints and general enquiries
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/contact/media-enquiries">
+                                            Media enquiries
+                                        </a>
+                                    </li>
+                            </ul>
+                        </div>
+            </div>
+    </div>
+</footer>
+
+</body>
+</html>
