@@ -38,7 +38,11 @@ You can call this function using the following line:
 tinScrape::extract_table_urls()
 ```
 
-This function webscrapes the downloadable hyperlinks for published data tables from the Stats at DfT GOV.UK webpage. The function calls on other functions that are found in the utils.R script which are designed to extract hyperlinks that pertain to statistical outputs only.
+This function webscrapes the downloadable hyperlinks for published data tables from the Stats at DfT GOV.UK webpage. The function calls on other functions that are found in the utils.R script which are designed to extract hyperlinks that pertain to statistical outputs only (specifically the `collect_collections()`, `collect_links()` and `scrape_tables()` functions).
+
+For downloadable documents, such as Excel files, the `extract_table_urls()` function takes into account the different formats for these URLs: numbers or hexidecimal values. A combination of both are used on GOV.UK.
+
+No argument is required to use this function as the Stats at DfT webpage is hardcoded into the function in the first instance.
 
 ### gcp_to_bq
 
@@ -127,4 +131,77 @@ Arguments required are:
 
 Due to this function being part of the `gcp_to_bq()` function, the arguments stated above do not need to be manually inputted as this is automated.
 
-### 
+### scrape_dynamic_methodology
+
+You can call this function using the following line:
+
+```
+tinScrape::scrape_dynamic_methodology()
+```
+This function webscrapes the any technical notes that accompany a publication. This covers notes and definitions and background quality reports. The function calls on other functions that are found in the utils.R script which are designed to extract hyperlinks that pertain to statistical outputs only (specifically the `collect_collections()` and `collect_links()` functions), and regex-based functions, such as `grepl()`, to filter for specific words that relate to these types of documents.
+
+No argument is required to use this function as the Stats at DfT webpage is hardcoded into the function in the first instance.
+
+### scrape_orr_tables
+
+You can call this function using the following line:
+
+```
+tinScrape::scrape_orr_tables()
+```
+
+This function webscrapes the downloadable hyperlinks for published data tables from the Office for Rail and Road's (ORR) data portal, to obtain rail data published by the organisation. The function calls the `extract_orr_pages()` function, found in the utils.R script, to extract hyperlinks that pertain to statistical outputs only.
+
+No argument is required to use this function as the ORR's passenger rail usage webpage is hardcoded into the function in the first instance. This is where the rail data of current interest is hosted on the site.
+
+### utils
+
+This is an R script that contains several functions which contributes to the running of several aforementioned functions.
+
+#### as.numeric.silent
+
+This function suppresses any warnings when assigning a variable to be numeric, so it does not appear in the published website.
+
+The argument required is a variable in a dataframe.
+
+#### scrape_links
+
+This function uses the packages `xml2` and `rvest` to extract underlying data and code behind an HTML webpage. It is currently set up to identify hyperlinks on a webpage and extracting both the text that is linked, and the URL destination of the hyperlink.
+
+The argument required is a URL, or webpage.
+
+#### collect_collections
+
+This function uses the `scrape_links()` function above to extract all hyperlinks on a webpage, and then filter for any mention of "statistics" and "collections" in the URL. The output is a list of all the statistical collections on the Stats at DfT site.
+
+The argument required is a URL, or webpage.
+
+#### collect_links
+
+This function uses the `scrape_links()` function above to extract all hyperlinks on a webpage, and then filter for any statistical outputs. It does this by filtering for any mention of "statistic" or "uploads" in the URL, the former relating more to HTML documents (such as reports and technical notes) whilst the latter relates more to downloadable documents (such as Excel tables). The output is a list of hyperlinks that navigate users to statistical outputs.
+
+The argument required is a URL, or webpage.
+
+#### scrape_tables
+
+This function uses the `scrape_links()` function above to extract all hyperlinks on a webpage, and then filter specifically for published, statistical CSV or ODS tables. It does this by filtering for any mention of ".ods" or ".csv" in the URL. The output is a list of ODS and CSV tables that are published by statistics teams in the department.
+
+The argument required is a URL, or webpage.
+
+#### upper_case
+
+This function makes the first character of a string capital.
+
+The argument required is a variable in a dataframe.
+
+#### scrape_method
+
+This function uses the packages `xml2` and `rvest` to extract underlying data and code behind an HTML webpage, specifically for any mentions of "information", "technical" and "guidance" in URLs. These tend to refer to technical notes that are published alongside a statistical report. The output is a list of technical notes that are published on the Stats at DfT website.
+
+The argument required is a URL, or webpage.
+
+#### collect_links
+
+This function uses the packages `xml2` and `rvest` to extract underlying data and code behind an HTML webpage. It has been designed to search for and extract URLs from the ORR's data portal site that relate to statistical outputs.
+
+The argument required is a URL, or webpage.
