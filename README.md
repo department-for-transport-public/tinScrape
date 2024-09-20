@@ -28,7 +28,6 @@ Currently, tinScrape is made up of the following main functions:
 * `gcp_to_bq`
 * `scrape_dynamic_methodology`
 * `scrape_orr_tables`
-* `utils`
 
 ### extract_table_urls
 
@@ -72,9 +71,9 @@ You can call this function using the following line:
 tinScrape::gcp_tables_to_list()
 ```
 
-For a given Excel document, this function searches for that document in GCS and reads it into R. Each marked up table in the document are outputted as lists in the R environment, where the name of the list is the worksheet's name.
+For a given ODS document, this function searches for that document in GCS and reads it into R. Each marked up table in the document are outputted as lists in the R environment, where the name of the list is the worksheet's name.
 
-The argument required for the function is the name of the Excel file. If the function does not seem to work, check the GCS storage bucket to see if the Excel file's name you are trying to call matches with what is in the bucket.
+The argument required for the function is the name of the ODS file. If the function does not seem to work, check the GCS storage bucket to see if the ODS file's name you are trying to call matches with what is in the bucket.
 
 Due to this function being part of the `gcp_to_bq()` function, the arguments stated above do not need to be manually inputted as this is automated and the input is case insensitive.
 
@@ -126,8 +125,8 @@ This function exports the tidied data to BQ. It checks if the data table already
 Arguments required are:
 
 * the name of tidied data
-* the name of the worksheet, found in the Excel document
-* the name of the Excel document
+* the name of the worksheet, found in the ODS document
+* the name of the ODS document
 
 Due to this function being part of the `gcp_to_bq()` function, the arguments stated above do not need to be manually inputted as this is automated.
 
@@ -156,7 +155,7 @@ No argument is required to use this function as the ORR's passenger rail usage w
 
 ### utils
 
-This is an R script that contains several functions which contributes to the running of several aforementioned functions.
+This is an R script that contains other functions that contribute to and complement the running of the aforementioned functions.
 
 #### as.numeric.silent
 
