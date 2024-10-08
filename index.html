@@ -47,11 +47,178 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="tinscrape">tinScrape<a class="anchor" aria-label="anchor" href="#tinscrape"></a>
 </h1></div>
+<div class="section level2">
+<h2 id="installing-tinscrape">Installing tinScrape<a class="anchor" aria-label="anchor" href="#installing-tinscrape"></a>
+</h2>
 <p>To install the tinScrape package use:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"department-for-transport-public/tinScrape"</span><span class="op">)</span></span></code></pre>
-<p>There is only one function in the package, and you can call it without a url argument e.g.</p>
+</div>
+<div class="section level2">
+<h2 id="what-is-tinscrape">What is tinScrape?<a class="anchor" aria-label="anchor" href="#what-is-tinscrape"></a>
+</h2>
+<p>The tinScrape package is made up of several functions that focuses on:</p>
+<ul>
+<li>webscraping information and downloadable hyperlinks from GOV.UK</li>
+<li>extracting information in Excel worksheets</li>
+<li>transforming data tables into a tidy format, that is a long format</li>
+<li>automating the migration of data stored in Google Cloud Storage (GCS) buckets into BigQuery (BQ)</li>
+</ul>
+<p>The package complements and supports the development and maintenance of the Department for Transport’s currently internal-facing website - Transport in Numbers (TiN).</p>
+</div>
+<div class="section level2">
+<h2 id="functions-included">Functions included<a class="anchor" aria-label="anchor" href="#functions-included"></a>
+</h2>
+<p>Currently, tinScrape is made up of the following main functions:</p>
+<ul>
+<li><code>extract_table_urls</code></li>
+<li><code>gcp_to_bq</code></li>
+<li><code>scrape_dynamic_methodology</code></li>
+<li><code>scrape_orr_tables</code></li>
+</ul>
+<div class="section level3">
+<h3 id="extract_table_urls">extract_table_urls<a class="anchor" aria-label="anchor" href="#extract_table_urls"></a>
+</h3>
+<p>You can call this function using the following line:</p>
 <pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu"><a href="reference/extract_table_urls.html">extract_table_urls</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<p>This function webscrapes the downloadable hyperlinks for published data tables from the Stats at DfT GOV.UK webpage. The function calls on other functions that are found in the utils.R script which are designed to extract hyperlinks that pertain to statistical outputs only (specifically the <code><a href="reference/collect_collections.html">collect_collections()</a></code>, <code><a href="reference/collect_links.html">collect_links()</a></code> and <code><a href="reference/scrape_tables.html">scrape_tables()</a></code> functions).</p>
+<p>For downloadable documents, such as Excel files, the <code><a href="reference/extract_table_urls.html">extract_table_urls()</a></code> function takes into account the different formats for these URLs: numbers or hexidecimal values. A combination of both are used on GOV.UK.</p>
+<p>No argument is required to use this function as the Stats at DfT webpage is hardcoded into the function in the first instance.</p>
+</div>
+<div class="section level3">
+<h3 id="gcp_to_bq">gcp_to_bq<a class="anchor" aria-label="anchor" href="#gcp_to_bq"></a>
+</h3>
+<p>You can call this function using the following line:</p>
+<pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu"><a href="reference/gcp_to_bq.html">gcp_to_bq</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<p>This function takes a published data table, if it exists in GCS, extracts all the worksheets within the document, tidies the data and stores the final output in BQ. To do this, it calls on 3 other functions, created specifically for TiN:</p>
+<ul>
+<li><code>gcp_tables_to_list</code></li>
+<li><code>tidied_df</code></li>
+<li><code>create_bq_table</code></li>
+</ul>
+<p>Further information about each of these functions are below.</p>
+<p>The argument required for the function is the name of the Excel file. If the function does not seem to work, check the GCS storage bucket to see if the Excel file’s name you are trying to call matches with what is in the bucket.</p>
+<p>The <code><a href="reference/gcp_to_bq.html">gcp_to_bq()</a></code> ensures the input - the name of the Excel file - is set to be uppercase, so the function is case insensitive.</p>
+<div class="section level4">
+<h4 id="gcp_tables_to_list">gcp_tables_to_list<a class="anchor" aria-label="anchor" href="#gcp_tables_to_list"></a>
+</h4>
+<p>You can call this function using the following line:</p>
+<pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu">gcp_tables_to_list</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<p>For a given ODS document, this function searches for that document in GCS and reads it into R. Each marked up table in the document are outputted as lists in the R environment, where the name of the list is the worksheet’s name.</p>
+<p>The argument required for the function is the name of the ODS file. If the function does not seem to work, check the GCS storage bucket to see if the ODS file’s name you are trying to call matches with what is in the bucket.</p>
+<p>Due to this function being part of the <code><a href="reference/gcp_to_bq.html">gcp_to_bq()</a></code> function, the arguments stated above do not need to be manually inputted as this is automated and the input is case insensitive.</p>
+</div>
+<div class="section level4">
+<h4 id="tidied_df">tidied_df<a class="anchor" aria-label="anchor" href="#tidied_df"></a>
+</h4>
+<p>You can call this function using the following line:</p>
+<pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu"><a href="reference/tidied_df.html">tidied_df</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<p>This function automates the conversion of data tables from the format they are found in the Excel document (usually wide format) to long format.</p>
+<p>The function also strips additional information from the table (such as notes and shorthand notation) and converts column headings to be written in a tidy, consistent format (in this case, snake-case with underscores). The latter ensures it meets BQ requirements for column headings, which prevents special characters and similar from being used.</p>
+<p>The argument required for the function is the data table, that would have been read into R using the <code>gcp_tables_to_list()</code>.</p>
+<p>Due to this function being part of the <code><a href="reference/gcp_to_bq.html">gcp_to_bq()</a></code> function, the arguments stated above do not need to be manually inputted as this is automated and the input is case insensitive.</p>
+<p>The tidying of the data table’s format is done by identifying when the last qualitative or time period column is. Most of the time, data tables either has:</p>
+<ul>
+<li>a time period column in the first column which precedes the quantitative data,</li>
+<li>columns with qualitative data which precedes the quantitative data, or</li>
+<li>a time period column, qualitative data and then the quantitative data</li>
+</ul>
+<p>The location of the first column of quantitative data is identified, and is then pivoted to the long format desired. This is done using the <code><a href="reference/year_column_check.html">year_column_check()</a></code> function which is called on as part of the <code><a href="reference/tidied_df.html">tidied_df()</a></code> function.</p>
+<p>The <code><a href="reference/year_column_check.html">year_column_check()</a></code> function has the following criteria, where all must be met for it to flag a column containing time period information (that is, year information):</p>
+<ul>
+<li>is the length of the value 4 characters long?</li>
+<li>is the variable class numeric, double or integer?</li>
+<li>are there no NA values in the column?</li>
+<li>do the first characters of the values start with 19 or 20?</li>
+</ul>
+<p>Each pass equates to a value of 1. If the sum of all the checks is 4 (for the number of tests), then the column in question contains time period data.</p>
+<p>The argument required for the function is a column in a dataframe. In the context of the <code><a href="reference/tidied_df.html">tidied_df()</a></code> function, this is looped through all columns in a dataframe, so no input is required for the purposes on TiN.</p>
+</div>
+<div class="section level4">
+<h4 id="create_bq_table">create_bq_table<a class="anchor" aria-label="anchor" href="#create_bq_table"></a>
+</h4>
+<p>You can call this function using the following line:</p>
+<pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu"><a href="reference/create_bq_table.html">create_bq_table</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<p>This function exports the tidied data to BQ. It checks if the data table already exists in BQ so it can truncate/overwrite the data in it. It is set up this way to ensure the latest information is always reflected in BQ. Otherwise it will create a new table in the <code>dft-stats-diss-dev</code> dataset in BQ and populate it with the data.</p>
+<p>Arguments required are:</p>
+<ul>
+<li>the name of tidied data</li>
+<li>the name of the worksheet, found in the ODS document</li>
+<li>the name of the ODS document</li>
+</ul>
+<p>Due to this function being part of the <code><a href="reference/gcp_to_bq.html">gcp_to_bq()</a></code> function, the arguments stated above do not need to be manually inputted as this is automated.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="scrape_dynamic_methodology">scrape_dynamic_methodology<a class="anchor" aria-label="anchor" href="#scrape_dynamic_methodology"></a>
+</h3>
+<p>You can call this function using the following line:</p>
+<pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu">scrape_dynamic_methodology</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<p>This function webscrapes the any technical notes that accompany a publication. This covers notes and definitions and background quality reports. The function calls on other functions that are found in the utils.R script which are designed to extract hyperlinks that pertain to statistical outputs only (specifically the <code><a href="reference/collect_collections.html">collect_collections()</a></code> and <code><a href="reference/collect_links.html">collect_links()</a></code> functions), and regex-based functions, such as <code><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl()</a></code>, to filter for specific words that relate to these types of documents.</p>
+<p>No argument is required to use this function as the Stats at DfT webpage is hardcoded into the function in the first instance.</p>
+</div>
+<div class="section level3">
+<h3 id="scrape_orr_tables">scrape_orr_tables<a class="anchor" aria-label="anchor" href="#scrape_orr_tables"></a>
+</h3>
+<p>You can call this function using the following line:</p>
+<pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu">scrape_orr_tables</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<p>This function webscrapes the downloadable hyperlinks for published data tables from the Office for Rail and Road’s (ORR) data portal, to obtain rail data published by the organisation. The function calls the <code>extract_orr_pages()</code> function, found in the utils.R script, to extract hyperlinks that pertain to statistical outputs only.</p>
+<p>No argument is required to use this function as the ORR’s passenger rail usage webpage is hardcoded into the function in the first instance. This is where the rail data of current interest is hosted on the site.</p>
+</div>
+<div class="section level3">
+<h3 id="utils">utils<a class="anchor" aria-label="anchor" href="#utils"></a>
+</h3>
+<p>This is an R script that contains other functions that contribute to and complement the running of the aforementioned functions.</p>
+<div class="section level4">
+<h4 id="asnumericsilent">as.numeric.silent<a class="anchor" aria-label="anchor" href="#asnumericsilent"></a>
+</h4>
+<p>This function suppresses any warnings when assigning a variable to be numeric, so it does not appear in the published website.</p>
+<p>The argument required is a variable in a dataframe.</p>
+</div>
+<div class="section level4">
+<h4 id="scrape_links">scrape_links<a class="anchor" aria-label="anchor" href="#scrape_links"></a>
+</h4>
+<p>This function uses the packages <code>xml2</code> and <code>rvest</code> to extract underlying data and code behind an HTML webpage. It is currently set up to identify hyperlinks on a webpage and extracting both the text that is linked, and the URL destination of the hyperlink.</p>
+<p>The argument required is a URL, or webpage.</p>
+</div>
+<div class="section level4">
+<h4 id="collect_collections">collect_collections<a class="anchor" aria-label="anchor" href="#collect_collections"></a>
+</h4>
+<p>This function uses the <code><a href="reference/scrape_links.html">scrape_links()</a></code> function above to extract all hyperlinks on a webpage, and then filter for any mention of “statistics” and “collections” in the URL. The output is a list of all the statistical collections on the Stats at DfT site.</p>
+<p>The argument required is a URL, or webpage.</p>
+</div>
+<div class="section level4">
+<h4 id="collect_links">collect_links<a class="anchor" aria-label="anchor" href="#collect_links"></a>
+</h4>
+<p>This function uses the <code><a href="reference/scrape_links.html">scrape_links()</a></code> function above to extract all hyperlinks on a webpage, and then filter for any statistical outputs. It does this by filtering for any mention of “statistic” or “uploads” in the URL, the former relating more to HTML documents (such as reports and technical notes) whilst the latter relates more to downloadable documents (such as Excel tables). The output is a list of hyperlinks that navigate users to statistical outputs.</p>
+<p>The argument required is a URL, or webpage.</p>
+</div>
+<div class="section level4">
+<h4 id="scrape_tables">scrape_tables<a class="anchor" aria-label="anchor" href="#scrape_tables"></a>
+</h4>
+<p>This function uses the <code><a href="reference/scrape_links.html">scrape_links()</a></code> function above to extract all hyperlinks on a webpage, and then filter specifically for published, statistical CSV or ODS tables. It does this by filtering for any mention of “.ods” or “.csv” in the URL. The output is a list of ODS and CSV tables that are published by statistics teams in the department.</p>
+<p>The argument required is a URL, or webpage.</p>
+</div>
+<div class="section level4">
+<h4 id="upper_case">upper_case<a class="anchor" aria-label="anchor" href="#upper_case"></a>
+</h4>
+<p>This function makes the first character of a string capital.</p>
+<p>The argument required is a variable in a dataframe.</p>
+</div>
+<div class="section level4">
+<h4 id="scrape_method">scrape_method<a class="anchor" aria-label="anchor" href="#scrape_method"></a>
+</h4>
+<p>This function uses the packages <code>xml2</code> and <code>rvest</code> to extract underlying data and code behind an HTML webpage, specifically for any mentions of “information”, “technical” and “guidance” in URLs. These tend to refer to technical notes that are published alongside a statistical report. The output is a list of technical notes that are published on the Stats at DfT website.</p>
+<p>The argument required is a URL, or webpage.</p>
+</div>
+<div class="section level4">
+<h4 id="collect_links-1">collect_links<a class="anchor" aria-label="anchor" href="#collect_links-1"></a>
+</h4>
+<p>This function uses the packages <code>xml2</code> and <code>rvest</code> to extract underlying data and code behind an HTML webpage. It has been designed to search for and extract URLs from the ORR’s data portal site that relate to statistical outputs.</p>
+<p>The argument required is a URL, or webpage.</p>
+</div>
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
@@ -90,7 +257,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
