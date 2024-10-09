@@ -1,7 +1,7 @@
 Package: tinScrape
 Type: Package
 Title: Import Table Data for Transport in Numbers
-Version: 0.1.3
+Version: 0.1.4
 Authors@R: 
   c(person("Francesca", "Bryden", , "francesca.bryden@dft.gov.uk", role = c("aut", "cre")),
     person("Mohan", "Dell", , "mohan.dell@dft.gov.uk", role = c("aut")),
@@ -9,7 +9,9 @@ Authors@R:
 Description: Webscrapes to find all of the relevant tables for the Transport in Numbers project.
 License: MIT + file LICENSE
 Imports:
-    rvest, xml2, dplyr, purrr, Rmpfr, magrittr, bigrquery, janitor
+    rvest, xml2, dplyr, purrr, Rmpfr, magrittr, bigrquery, janitor, googleCloudStorageR, rlist, odsTableReadr
+Remotes:
+    department-for-transport-public/odsTableReadr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
