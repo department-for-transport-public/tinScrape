@@ -1,0 +1,113 @@
+##Put metadata into BQ----------
+# function to download a published table, using the TS Finder list
+download_cover <- function(df_name, bucket_name = "tin_dev_data_storage") {
+  f <- tempfile()
+
+  # read in list of published tables, from the TS Finder project
+  full_table_list <- gcs_list_objects(bucket_name) %>%
+    dplyr::filter(grepl(df_name, name, ignore.case = TRUE)) %>%
+    dplyr::arrange(desc(updated)) %>%
+    dplyr::slice(1L) %>%
+    dplyr::pull(name)
+
+  # download the file using the URL
+  gcs_get_object(
+    bucket = bucket_name,
+    full_table_list,
+    overwrite = TRUE,
+    saveToDisk = f
+  )
+
+  # extract the names of the different worksheets in the workbook
+  sheets <- readODS::list_ods_sheets(f)
+  ##Keep just the cover sheet
+  sheets <- sheets[grepl("cover", sheets, ignore.case = TRUE)]
+
+  if (!purrr::is_empty(sheets)) {
+    cover_info <- readODS::read_ods(path = f,
+                                    sheet = sheets[1],
+                                    # remove any mentions of [x] and .. from worksheets
+                                    na = c("[x]", ".."))[1]
+    ##Set column name
+    names(cover_info) <- "column1"
+
+    ##Make a nice string of month names
+    month_nms <- paste(month.name, collapse = "|")
+
+    ##Get emails
+    emails <- cover_info %>%
+      dplyr::filter(!is.na(column1)) %>%
+      ##Let's try and detect dates generally
+      dplyr::filter(grepl("email", column1, ignore.case = TRUE)) %>%
+      tidyr::separate(col = column1,
+                      sep = ":",
+                      into = c("text", "info")) %>%
+      dplyr::mutate(source = df_name)
+
+    ##Get rid of na values
+    dates <- cover_info %>%
+      dplyr::filter(!is.na(column1)) %>%
+      ##Let's try and detect dates generally
+      dplyr::filter(grepl(month_nms, column1, ignore.case = TRUE)) %>%
+      ##Split into date info and other stuff
+      dplyr::mutate(info = dplyr::case_when(
+        grepl(
+          paste0("(", month_nms, ")", " \\d{4}"),
+          ignore.case = TRUE,
+          column1
+        ) ~
+          gsub(
+            paste0(".*(", month_nms, ") (\\d{4}).*"),
+            "\\1 \\2",
+            ignore.case = TRUE,
+            column1
+          )
+      )) %>%
+      dplyr::mutate(source = df_name, text = as.character(column1)) %>%
+      dplyr::select(-column1)
+
+    info <- bind_rows(emails, dates)
+
+  } else {
+    info <- tibble::tibble("info" = NA_character_,
+                           "text" = NA_character_,
+                           "source" = df_name)
+  }
+
+  unlink(f)
+  return(info)
+}
+
+extract_metadata <- function(bucket_name) {
+  ##Use function safely
+  download_cover_meta <-  purrr::possibly(download_cover)
+
+
+  ##Extract all objects in the bucket
+  all_updates <- gcs_list_objects(bucket_name) %>%
+    ##Keep only most recent files
+    dplyr::mutate(updated = as.Date(updated)) %>%
+    dplyr::filter(updated == max(updated, na.rm = TRUE), grepl("[.]ods$", name)) %>%
+    ##Keep names only
+    dplyr::pull(name) %>%
+    purrr::map(.f = download_cover_meta) %>%
+    ##Turn into a dataframe
+    purrr::list_rbind() %>%
+    ##Remove NA info
+    dplyr::filter(!is.na(info)) %>%
+    dplyr::mutate(
+      text = dplyr::case_when(
+        grepl("email", text, ignore.case = TRUE) ~ "email",
+        grepl("next|(provisional update)", text, ignore.case = TRUE) ~ "next_update",
+        grepl("updated|(This data table was published on)", text, ignore.case = TRUE) ~ "last_update",
+        grepl("published on", text, ignore.case = TRUE) ~ "last_update"
+      )
+    ) %>%
+    dplyr::filter(!is.na(text)) %>%
+    unique() %>%
+    tidyr::pivot_wider(names_from = "text", values_from = "info")
+
+  return(all_updates)
+}
+
+
