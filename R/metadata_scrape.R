@@ -124,16 +124,33 @@ download_cover <- function(df_name, bucket_name = "tin_dev_data_storage") {
 #' @export
 
 
-extract_metadata <- function(bucket_name) {
+extract_metadata <- function(bucket_name = "tin_dev_data_storage") {
   ##Use function safely
   download_cover_meta <-  purrr::possibly(download_cover)
 
+  ##Check there are any bucket objects
+  all_bucket_objects <- gcs_list_objects(bucket_name)
 
-  ##Extract all objects in the bucket
-  all_updates <- gcs_list_objects(bucket_name) %>%
+  if(nrow(all_bucket_objects) == 0){
+
+    stop("No objects found in bucket ", bucket_name)
+
+  }
+
+  ##Check there are relevant bucket objects
+  all_bucket_objects <- all_bucket_objects %>%
     ##Keep only most recent files
     dplyr::mutate(updated = as.Date(updated)) %>%
-    dplyr::filter(updated == max(updated, na.rm = TRUE), grepl("[.]ods$", name)) %>%
+    dplyr::filter(updated == max(updated, na.rm = TRUE), grepl("[.]ods$", name))
+
+  if(nrow(all_bucket_objects) == 0){
+
+    stop("No ods objects found for most recent date")
+
+  }
+
+  ##Extract all objects in the bucket
+  all_updates <-  all_bucket_objects %>%
     ##Keep names only
     dplyr::pull(name) %>%
     purrr::map(.f = download_cover_meta) %>%
