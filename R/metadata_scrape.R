@@ -1,5 +1,27 @@
-##Put metadata into BQ----------
-# function to download a published table, using the TS Finder list
+#' Download the cover sheet from a published table
+#'
+#' This function downloads the most recent table that matches the provided
+#' name from a Google Cloud Storage (GCS) bucket and extracts the cover sheet
+#' containing relevant metadata such as emails and dates.
+#'
+#' @param df_name A string representing the name of the table to be downloaded.
+#' The function will look for tables in the specified GCS bucket that match this string (case-insensitive).
+#' @param bucket_name A string representing the name of the GCS bucket from which the table will be downloaded. Default is `"tin_dev_data_storage"`.
+#'
+#' @return A tibble containing two types of metadata:
+#' - Emails: rows containing email addresses found on the cover sheet.
+#' - Dates: rows containing date information found on the cover sheet.
+#' If no cover sheet is found, the tibble will contain `NA` values for the columns `info`, `text`, and `source`.
+#'
+#' @import dplyr
+#' @importFrom magrittr "%>%"
+#' @importFrom tidyr separate
+#' @importFrom purrr is_empty
+#' @importFrom readODS list_ods_sheets read_ods
+#' @importFrom googleCloudStorageR gcs_list_objects gcs_get_object
+#' @importFrom tibble tibble
+#' @export
+
 download_cover <- function(df_name, bucket_name = "tin_dev_data_storage") {
   f <- tempfile()
 
@@ -77,6 +99,8 @@ download_cover <- function(df_name, bucket_name = "tin_dev_data_storage") {
   unlink(f)
   return(info)
 }
+
+
 
 extract_metadata <- function(bucket_name) {
   ##Use function safely
