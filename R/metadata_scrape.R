@@ -41,15 +41,15 @@ download_cover <- function(df_name, bucket_name = "tin_dev_data_storage") {
   )
 
   # extract the names of the different worksheets in the workbook
-  sheets <- readODS::list_ods_sheets(f)
+  sheets <- list_ods_sheets(f)
   ##Keep just the cover sheet
   sheets <- sheets[grepl("cover", sheets, ignore.case = TRUE)]
 
   if (!purrr::is_empty(sheets)) {
-    cover_info <- readODS::read_ods(path = f,
-                                    sheet = sheets[1],
-                                    # remove any mentions of [x] and .. from worksheets
-                                    na = c("[x]", ".."))[1]
+    cover_info <- read_ods(path = f,
+                           sheet = sheets[1],
+                           # remove any mentions of [x] and .. from worksheets
+                           na = c("[x]", ".."))[1]
     ##Set column name
     names(cover_info) <- "column1"
 
