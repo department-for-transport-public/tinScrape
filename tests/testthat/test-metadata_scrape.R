@@ -87,47 +87,18 @@ test_that("download_cover returns NA tibble when no cover sheet is found", {
   expect_true(all(is.na(result$text)))
 })
 
+
 test_that("download_cover handles missing or invalid .ods file", {
   # Mock external dependencies for invalid file scenario
-  mock_gcs_list_objects <- function(bucket_name) {
-    tibble(name = "invalid_file.csv", updated = Sys.Date())
-  }
-
-  mock_gcs_get_object <- function(bucket, object_name, overwrite, saveToDisk) {
-    # No valid file downloaded
-  }
-
-  # Use mocking
-  mockr::with_mock(
-    `googleCloudStorageR::gcs_list_objects` = mock_gcs_list_objects,
-    `googleCloudStorageR::gcs_get_object` = mock_gcs_get_object,
-
-    {
-      result <- download_cover("example_table")
-
-      # Check that result is a tibble with NA values
-      expect_true(is_tibble(result))
-      expect_true(all(is.na(result$info)))
+  local_mocked_bindings(
+    gcs_list_objects = function(bucket_name) {
+      tibble(name = "missing_table.csv", updated = Sys.Date())
     }
   )
-})
-#
-# test_that("download_cover returns empty tibble when no matching tables are found", {
-#   # Mock external dependencies for no matching files
-#   mock_gcs_list_objects <- function(bucket_name) {
-#     tibble(name = character(), updated = as.Date(character()))
-#   }
-#
-#   # Use mocking
-#   mockr::with_mock(
-#     `googleCloudStorageR::gcs_list_objects` = mock_gcs_list_objects,
-#
-#     {
-#       result <- download_cover("non_existent_table")
-#
-#       # Check that result is a tibble with NA values
-#       expect_true(is_tibble(result))
-#       expect_true(all(is.na(result$info)))
-#     }
-#   )
-# })
+
+  expect_error(download_cover("example_table"))
+  expect_error(download_cover("example_table"), "File example_table not found")
+
+
+}
+)

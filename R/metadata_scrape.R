@@ -25,12 +25,17 @@
 download_cover <- function(df_name, bucket_name = "tin_dev_data_storage") {
   f <- tempfile()
 
-  # read in list of published tables, from the TS Finder project
+  # read in list of published tables
   full_table_list <- gcs_list_objects(bucket_name) %>%
     dplyr::filter(grepl(df_name, name, ignore.case = TRUE)) %>%
     dplyr::arrange(desc(updated)) %>%
     dplyr::slice(1L) %>%
     dplyr::pull(name)
+
+  ##If no file is returned, give an error
+  if(length(full_table_list) == 0){
+    stop("File ", df_name, " not found")
+  }
 
   # download the file using the URL
   gcs_get_object(
