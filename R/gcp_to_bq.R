@@ -1,7 +1,7 @@
 #' To tidy published DfT data, stored in GCP, and move to BigQuery
 #' @name gcp_to_bq
 #' @param file_name DfT or ORR code for published table.
-#' @param bucket_name Set the GCS bucket location for the function to call to move the data from and into BQ. Currently, only locations that exist are "tin_dev_data_storage" for DfT tables and "tin_dev_orr_storage" for ORR tables.
+#' @param bucket_name Name of the GCS bucket that contains the data to be moved into BQ. Locations that exist are "tin_dev_data_storage" for DfT tables and "tin_dev_orr_storage" for ORR tables.
 #' @return A tidied, machine readable version of the table, in a long format, in BQ.
 #' @export
 #' @importFrom purrr map map2 map_df

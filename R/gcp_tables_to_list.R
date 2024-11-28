@@ -1,7 +1,7 @@
 #' To tidy published DfT data, stored in GCP, and move to BigQuery
 #' @name gcp_tables_to_list
 #' @param file_name DfT code for published table.
-#' @param bucket_name name of GCP bucket to use.
+#' @param bucket_name Name of the GCS bucket that contains the data to be moved into BQ. Locations that exist are "tin_dev_data_storage" for DfT tables and "tin_dev_orr_storage" for ORR tables.
 #' @return A list of raw data tables from the file in question, with one table per list item.
 #' @export
 #' @import dplyr
