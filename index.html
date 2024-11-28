@@ -8,8 +8,8 @@
 <title>Import Table Data for Transport in Numbers • tinScrape</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Import Table Data for Transport in Numbers">
 <meta name="description" content="Webscrapes to find all of the relevant tables for the Transport in Numbers project.">
 <meta property="og:description" content="Webscrapes to find all of the relevant tables for the Transport in Numbers project.">
@@ -103,7 +103,7 @@
 <h4 id="gcp_tables_to_list">gcp_tables_to_list<a class="anchor" aria-label="anchor" href="#gcp_tables_to_list"></a>
 </h4>
 <p>You can call this function using the following line:</p>
-<pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu">gcp_tables_to_list</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu"><a href="reference/gcp_tables_to_list.html">gcp_tables_to_list</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 <p>For a given ODS document, this function searches for that document in GCS and reads it into R. Each marked up table in the document are outputted as lists in the R environment, where the name of the list is the worksheet’s name.</p>
 <p>The argument required for the function is the name of the ODS file. If the function does not seem to work, check the GCS storage bucket to see if the ODS file’s name you are trying to call matches with what is in the bucket.</p>
 <p>Due to this function being part of the <code><a href="reference/gcp_to_bq.html">gcp_to_bq()</a></code> function, the arguments stated above do not need to be manually inputted as this is automated and the input is case insensitive.</p>
@@ -115,7 +115,7 @@
 <pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu"><a href="reference/tidied_df.html">tidied_df</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 <p>This function automates the conversion of data tables from the format they are found in the Excel document (usually wide format) to long format.</p>
 <p>The function also strips additional information from the table (such as notes and shorthand notation) and converts column headings to be written in a tidy, consistent format (in this case, snake-case with underscores). The latter ensures it meets BQ requirements for column headings, which prevents special characters and similar from being used.</p>
-<p>The argument required for the function is the data table, that would have been read into R using the <code>gcp_tables_to_list()</code>.</p>
+<p>The argument required for the function is the data table, that would have been read into R using the <code><a href="reference/gcp_tables_to_list.html">gcp_tables_to_list()</a></code>.</p>
 <p>Due to this function being part of the <code><a href="reference/gcp_to_bq.html">gcp_to_bq()</a></code> function, the arguments stated above do not need to be manually inputted as this is automated and the input is case insensitive.</p>
 <p>The tidying of the data table’s format is done by identifying when the last qualitative or time period column is. Most of the time, data tables either has:</p>
 <ul>
