@@ -1,20 +1,21 @@
 #' To tidy published DfT data, stored in GCP, and move to BigQuery
 #' @name gcp_to_bq
-#' @param file_name DfT code for published table.
+#' @param file_name DfT or ORR code for published table.
+#' @param bucket_name Name of the GCS bucket that contains the data to be moved into BQ. Locations that exist are "tin_dev_data_storage" for DfT tables and "tin_dev_orr_storage" for ORR tables.
 #' @return A tidied, machine readable version of the table, in a long format, in BQ.
 #' @export
-#' @importFrom purrr map map_df
+#' @importFrom purrr map map2 map_df
 #' @importFrom Rmpfr mpfr
 #' @importFrom magrittr "%>%"
 
-gcp_to_bq <- function(file_name){
+gcp_to_bq <- function(file_name, bucket_name){
 
   file_name <- toupper(file_name)
 
   message("Processing ", file_name)
 
   # download the table into the R environment. Enter dft code in speech marks
-  sheets_to_r <- gcp_tables_to_list(file_name)
+  sheets_to_r <- gcp_tables_to_list(file_name, bucket_name)
 
   ##Set up a safe version of tidied_df that doesn't break the loop
   safe_tidying <- purrr::possibly(tidied_df,

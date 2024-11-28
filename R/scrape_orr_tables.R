@@ -17,7 +17,7 @@ extract_orr_urls <- function(url = "https://dataportal.orr.gov.uk/statistics/usa
                                    .f = extract_orr_pages),
         collection_url = url,
         upload_id = 1) %>%
-    dplyr::rename("file_name" = ".") %>%
+    dplyr::select(-.) %>%
     ##Keep just the name after the final slash for the file name
-    dplyr::mutate(file_name = gsub("(^.*[/])(.*[/]$)", "\\2", file_name))
+    dplyr::mutate(file_name = gsub("(^.*[/])(.*$)", "\\2", doc_url))
 }
