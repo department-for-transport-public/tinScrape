@@ -21,6 +21,11 @@ gcp_tables_to_list <- function(file_name, bucket_name){
     dplyr::slice(1L) %>%
     dplyr::pull(name)
 
+  ##If no file is returned, give an error
+  if(length(full_table_list) == 0){
+    stop("File ", df_name, " not found")
+  }
+
   # download the file using the URL
   gcs_get_object(bucket = bucket_name,
                  full_table_list,

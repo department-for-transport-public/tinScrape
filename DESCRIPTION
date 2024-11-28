@@ -9,7 +9,7 @@ Authors@R:
 Description: Webscrapes to find all of the relevant tables for the Transport in Numbers project.
 License: MIT + file LICENSE
 Imports:
-    rvest, xml2, dplyr, purrr, Rmpfr, magrittr, bigrquery, janitor, googleCloudStorageR, rlist, odsTableReadr
+    rvest, xml2, dplyr, purrr, Rmpfr, magrittr, bigrquery, janitor, googleCloudStorageR, rlist, odsTableReadr, stringr, tibble, tidyr
 Remotes:
     department-for-transport-public/odsTableReadr
 Encoding: UTF-8
