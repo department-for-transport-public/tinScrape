@@ -1,10 +1,10 @@
-#' Download the cover sheet from a published table
+#' Download the cover sheet from a published DfT table
 #'
-#' This function downloads the most recent table that matches the provided
+#' This function downloads the most recent DfT table that matches the provided
 #' name from a Google Cloud Storage (GCS) bucket and extracts the cover sheet
 #' containing relevant metadata such as emails and dates.
 #' @name download_cover
-#' @param df_name A string representing the name of the table to be downloaded.
+#' @param df_name A string representing the name of the DfT table to be downloaded.
 #' The function will look for tables in the specified GCS bucket that match this string (case-insensitive).
 #' @param bucket_name A string representing the name of the GCS bucket from which the table will be downloaded. Default is `"tin_dev_data_storage"`.
 #'
@@ -105,12 +105,12 @@ download_cover <- function(df_name, bucket_name = "tin_dev_data_storage") {
   return(info)
 }
 
-#' Extract metadata from the most recent files in a Google Cloud Storage bucket
+#' Extract metadata from the most recent DfT files in a Google Cloud Storage bucket
 #'
-#' This function extracts metadata from the most recent `.ods` files in a specified
-#' Google Cloud Storage (GCS) bucket. It uses the `download_cover` function to
-#' retrieve the cover sheet metadata (emails and dates) and processes it into
-#' a tidy format.
+#' This function extracts metadata from the most recent `.ods` DfT files in a 
+#' specified Google Cloud Storage (GCS) bucket. It uses the `download_cover` 
+#' function to retrieve the cover sheet metadata (emails and dates) and processes 
+#' it into a tidy format.
 #'
 #' @name extract_metadata
 #' @param bucket_name A string representing the name of the GCS bucket from which the metadata will be extracted.
