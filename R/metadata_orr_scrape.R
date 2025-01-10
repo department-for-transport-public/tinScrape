@@ -143,7 +143,8 @@ extract_orr_metadata <- function(bucket_name = "tin_dev_orr_storage") {
   download_cover_meta <-  purrr::possibly(download_orr_cover)
   
   ##Check there are any bucket objects
-  all_bucket_objects <- gcs_list_objects(bucket_name)
+  all_bucket_objects <- gcs_list_objects(bucket_name) %>% 
+    dplyr::filter(grepl("^table-", name))
   
   if(nrow(all_bucket_objects) == 0){
     
@@ -155,7 +156,8 @@ extract_orr_metadata <- function(bucket_name = "tin_dev_orr_storage") {
   all_bucket_objects <- all_bucket_objects %>%
     ##Keep only most recent files
     dplyr::mutate(updated = as.Date(updated)) %>%
-    dplyr::filter(updated == max(updated, na.rm = TRUE), grepl("[.]ods$", name))
+    dplyr::filter(updated == max(updated, na.rm = TRUE), 
+                  grepl("[.]ods$", name))
   
   if(nrow(all_bucket_objects) == 0){
     
