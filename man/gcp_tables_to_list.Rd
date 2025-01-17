@@ -4,12 +4,12 @@
 \alias{gcp_tables_to_list}
 \title{To tidy published DfT data, stored in GCP, and move to BigQuery}
 \usage{
-gcp_tables_to_list(file_name, bucket_name = "tin_dev_data_storage")
+gcp_tables_to_list(file_name, bucket_name)
 }
 \arguments{
 \item{file_name}{DfT code for published table.}
 
-\item{bucket_name}{name of GCP bucket to use; defaults to "tin_dev_data_storage"}
+\item{bucket_name}{Name of the GCS bucket that contains the data to be moved into BQ. Locations that exist are "tin_dev_data_storage" for DfT tables and "tin_dev_orr_storage" for ORR tables.}
 }
 \value{
 A list of raw data tables from the file in question, with one table per list item.
