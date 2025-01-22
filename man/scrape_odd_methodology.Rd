@@ -2,7 +2,7 @@
 % Please edit documentation in R/scrape_dynamic_methodology.R
 \name{scrape_odd_methodology}
 \alias{scrape_odd_methodology}
-\title{For a provided url, return those stats which have dynamically updating methdology links}
+\title{For a provided url, return those stats which have dynamically updating methodology links}
 \usage{
 scrape_odd_methodology(
   url =
@@ -13,8 +13,8 @@ scrape_odd_methodology(
 \item{url}{URL of the web page to scrape urls from. Defaults to the gov.uk stats homepage}
 }
 \value{
-a table containing two columns, the collection url and the methodoloy url
+a table containing two columns, the collection url and the methodology url
 }
 \description{
-For a provided url, return those stats which have dynamically updating methdology links
+For a provided url, return those stats which have dynamically updating methodology links
 }
