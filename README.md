@@ -25,6 +25,7 @@ The package complements and supports the development and maintenance of the Depa
 Currently, tinScrape is made up of the following main functions:
 
 * `extract_table_urls`
+* `extract_metadata`
 * `gcp_to_bq`
 * `scrape_dynamic_methodology`
 * `scrape_orr_tables`
@@ -42,6 +43,22 @@ This function webscrapes the downloadable hyperlinks for published data tables f
 For downloadable documents, such as Excel files, the `extract_table_urls()` function takes into account the different formats for these URLs: numbers or hexidecimal values. A combination of both are used on GOV.UK.
 
 No argument is required to use this function as the Stats at DfT webpage is hardcoded into the function in the first instance.
+
+### extract_metadata
+
+You can call this function using the following line:
+
+```
+tinScrape::extract_metadata()
+```
+
+This functions utilises the `download_cover()` function to read and extract a publication's metadata on an ODS' Cover sheet. For the purposes of TiN, this covers the email address and date of publication.
+
+The function reads in the data saved in GCS, extracts the information after identifying the Cover sheet and saves it in a dataframe. A separate chunk of code is then required to be run for this information to be exported to BQ. This is provided below:
+
+`bigrquery::bq_table_upload("[name of BQ table]", tinScrape::extract_metadata(), create_disposition='CREATE_IF_NEEDED', write_disposition = "WRITE_TRUNCATE")`
+
+Equivalent functions to extract and export the metadata from ORR tables exist, and are `extract_orr_metadata()` and `download_orr_cover()`.
 
 ### gcp_to_bq
 
@@ -140,6 +157,8 @@ tinScrape::scrape_dynamic_methodology()
 This function webscrapes the any technical notes that accompany a publication. This covers notes and definitions and background quality reports. The function calls on other functions that are found in the utils.R script which are designed to extract hyperlinks that pertain to statistical outputs only (specifically the `collect_collections()` and `collect_links()` functions), and regex-based functions, such as `grepl()`, to filter for specific words that relate to these types of documents.
 
 No argument is required to use this function as the Stats at DfT webpage is hardcoded into the function in the first instance.
+
+For scraping the ORR technical notes, related to their tables, the `scrape_orr_methodology()` function is called.
 
 ### scrape_orr_tables
 
