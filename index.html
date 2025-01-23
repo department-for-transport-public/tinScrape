@@ -72,6 +72,7 @@
 <p>Currently, tinScrape is made up of the following main functions:</p>
 <ul>
 <li><code>extract_table_urls</code></li>
+<li><code>extract_metadata</code></li>
 <li><code>gcp_to_bq</code></li>
 <li><code>scrape_dynamic_methodology</code></li>
 <li><code>scrape_orr_tables</code></li>
@@ -84,6 +85,16 @@
 <p>This function webscrapes the downloadable hyperlinks for published data tables from the Stats at DfT GOV.UK webpage. The function calls on other functions that are found in the utils.R script which are designed to extract hyperlinks that pertain to statistical outputs only (specifically the <code><a href="reference/collect_collections.html">collect_collections()</a></code>, <code><a href="reference/collect_links.html">collect_links()</a></code> and <code><a href="reference/scrape_tables.html">scrape_tables()</a></code> functions).</p>
 <p>For downloadable documents, such as Excel files, the <code><a href="reference/extract_table_urls.html">extract_table_urls()</a></code> function takes into account the different formats for these URLs: numbers or hexidecimal values. A combination of both are used on GOV.UK.</p>
 <p>No argument is required to use this function as the Stats at DfT webpage is hardcoded into the function in the first instance.</p>
+</div>
+<div class="section level3">
+<h3 id="extract_metadata">extract_metadata<a class="anchor" aria-label="anchor" href="#extract_metadata"></a>
+</h3>
+<p>You can call this function using the following line:</p>
+<pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu"><a href="reference/extract_metadata.html">extract_metadata</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<p>This functions utilises the <code><a href="reference/download_cover.html">download_cover()</a></code> function to read and extract a publication’s metadata on an ODS’ Cover sheet. For the purposes of TiN, this covers the email address and date of publication.</p>
+<p>The function reads in the data saved in GCS, extracts the information after identifying the Cover sheet and saves it in a dataframe. A separate chunk of code is then required to be run for this information to be exported to BQ. This is provided below:</p>
+<p><code>bigrquery::bq_table_upload("[name of BQ table]", tinScrape::extract_metadata(), create_disposition='CREATE_IF_NEEDED', write_disposition = "WRITE_TRUNCATE")</code></p>
+<p>Equivalent functions to extract and export the metadata from ORR tables exist, and are <code><a href="reference/extract_orr_metadata.html">extract_orr_metadata()</a></code> and <code><a href="reference/download_orr_cover.html">download_orr_cover()</a></code>.</p>
 </div>
 <div class="section level3">
 <h3 id="gcp_to_bq">gcp_to_bq<a class="anchor" aria-label="anchor" href="#gcp_to_bq"></a>
@@ -156,6 +167,7 @@
 <pre><code><span><span class="fu">tinScrape</span><span class="fu">::</span><span class="fu">scrape_dynamic_methodology</span><span class="op">(</span><span class="op">)</span></span></code></pre>
 <p>This function webscrapes the any technical notes that accompany a publication. This covers notes and definitions and background quality reports. The function calls on other functions that are found in the utils.R script which are designed to extract hyperlinks that pertain to statistical outputs only (specifically the <code><a href="reference/collect_collections.html">collect_collections()</a></code> and <code><a href="reference/collect_links.html">collect_links()</a></code> functions), and regex-based functions, such as <code><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl()</a></code>, to filter for specific words that relate to these types of documents.</p>
 <p>No argument is required to use this function as the Stats at DfT webpage is hardcoded into the function in the first instance.</p>
+<p>For scraping the ORR technical notes, related to their tables, the <code><a href="reference/scrape_orr_methodology.html">scrape_orr_methodology()</a></code> function is called.</p>
 </div>
 <div class="section level3">
 <h3 id="scrape_orr_tables">scrape_orr_tables<a class="anchor" aria-label="anchor" href="#scrape_orr_tables"></a>
