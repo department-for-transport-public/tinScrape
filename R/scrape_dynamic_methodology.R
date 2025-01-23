@@ -1,7 +1,7 @@
-#' For a provided url, return those stats which have dynamically updating methdology links
+#' For a provided url, return those stats which have dynamically updating methodology links
 #' @name scrape_odd_methodology
 #' @param url URL of the web page to scrape urls from. Defaults to the gov.uk stats homepage
-#' @return a table containing two columns, the collection url and the methodoloy url
+#' @return a table containing two columns, the collection url and the methodology url
 #' @export
 #' @importFrom dplyr filter
 #' @importFrom purrr map list_rbind
