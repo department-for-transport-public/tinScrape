@@ -1,7 +1,7 @@
 Package: tinScrape
 Type: Package
 Title: Import Table Data for Transport in Numbers
-Version: 0.1.4
+Version: 0.1.5
 Authors@R: 
   c(person("Francesca", "Bryden", , "francesca.bryden@dft.gov.uk", role = c("aut", "cre")),
     person("Mohan", "Dell", , "mohan.dell@dft.gov.uk", role = c("aut")),
