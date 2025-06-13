@@ -88,7 +88,7 @@ scrape_tables <- function(url){
 
   ##Keep only upload links for ods/csv files
   tibble(
-    urls = links[grepl(".ods$|.csv$", links)])
+    urls = links[grepl(".ods$", links)])
 
   }
 
