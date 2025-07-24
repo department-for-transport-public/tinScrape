@@ -152,23 +152,23 @@ extract_orr_metadata <- function(bucket_name = "tin_dev_orr_storage") {
   }
   
   ##Check there are relevant bucket objects
-  all_bucket_objects <- all_bucket_objects %>%
+  all_bucket_objects_clean <- all_bucket_objects %>%
     ##Keep only most recent files
     dplyr::mutate(updated = as.Date(updated)) %>%
     dplyr::filter(updated == max(updated, na.rm = TRUE),
                   # filter for mentions of ODS in the URL
-                  grepl("[.]ods", name),
-                  # remove the additional information at the end of the file name
-                  name = sub("\\?.*", "", name))
+                  grepl("[.]ods", name)) %>% 
+    # remove the additional information at the end of the file name
+    dplyr::mutate(name = gsub("\\?.*", "", name))
   
-  if(nrow(all_bucket_objects) == 0){
+  if(nrow(all_bucket_objects_clean) == 0){
     
     stop("No ods objects found for most recent date")
     
   }
   
   ##Extract all objects in the bucket
-  all_updates <-  all_bucket_objects %>%
+  all_updates <-  all_bucket_objects_clean %>%
     ##Keep names only
     dplyr::pull(name) %>%
     purrr::map(.f = download_cover_meta) %>%
