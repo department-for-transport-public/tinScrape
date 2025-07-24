@@ -137,7 +137,6 @@ download_orr_cover <- function(df_name, bucket_name = "tin_dev_orr_storage") {
 #' @importFrom googleCloudStorageR gcs_list_objects
 #' @export
 
-
 extract_orr_metadata <- function(bucket_name = "tin_dev_orr_storage") {
   ##Use function safely
   download_cover_meta <-  purrr::possibly(download_orr_cover)
@@ -158,9 +157,9 @@ extract_orr_metadata <- function(bucket_name = "tin_dev_orr_storage") {
     dplyr::mutate(updated = as.Date(updated)) %>%
     dplyr::filter(updated == max(updated, na.rm = TRUE),
                   # filter for mentions of ODS in the URL
-                  grepl("[.]ods", name)) %>% 
-    # remove the additional information at the end of the file name
-    dplyr::mutate(name = gsub("\\?v=.*", "", name))
+                  grepl("[.]ods", name),
+                  # remove the additional information at the end of the file name
+                  name = sub("\\?.*", "", name))
   
   if(nrow(all_bucket_objects) == 0){
     
