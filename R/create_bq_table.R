@@ -11,7 +11,7 @@
 create_bq_table <- function(x, name, file_name){
 
   file_name <- gsub("-", "_", file_name, fixed = TRUE)
-  file_name <- gsub("\\\\.*", "", file_name)
+  file_name <- sub("\\.[^.]*$", "", file_name)
 
   ##Check if dataset exists and create if not
   if(!bq_dataset_exists(paste0("dft-stats-diss-dev.", file_name))){
