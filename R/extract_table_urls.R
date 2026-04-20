@@ -9,10 +9,15 @@
 
 extract_table_urls <- function(url = "https://www.gov.uk/government/organisations/department-for-transport/about/statistics"){
   # put together full list of tables
-  purrr::map(.x = collect_collections(url),
-             .f = collect_links) %>%
-    purrr::map_df(.f = scrape_tables,
-                  .id = "collection") %>%
+  df <- purrr::map(.x = collect_collections(url),
+             .f = collect_links) 
+  
+  # assign the value for the faster indicator page, since it is not a collection page
+  df$"https://www.gov.uk/government/statistics/developing-faster-indicators-of-transport-activity" <- "https://www.gov.uk/government/statistics/developing-faster-indicators-of-transport-activity"$"https://www.gov.uk/government/statistics/developing-faster-indicators-of-transport-activity" <- "https://www.gov.uk/government/statistics/developing-faster-indicators-of-transport-activity"
+ 
+   purrr::map_df(.x = df,
+                 .f = scrape_tables,
+                 .id = "collection") %>%
     unique() %>%
     ##Drop anything that starts with a hash
     dplyr::filter(!grepl("^[#]", urls)) %>%
@@ -43,20 +48,5 @@ extract_table_urls <- function(url = "https://www.gov.uk/government/organisation
     dplyr::rename(collection_url = collection, doc_url = urls) %>%
     dplyr::mutate(collection = upper_case(gsub("^.*[/]", "", collection_url)),
                   collection = gsub("-", " ", collection),
-                  collection = gsub("covid 19", "(COVID-19)", collection)) %>% 
-    dplyr::mutate(
-      collection = dplyr::case_when(
-        grepl("Monthly_public_EV_chargers_by_region_and_country_UK", file_name) ~ "Developing faster indicators of transport activity",
-        grepl("large-goods-vehicle-vocational-testing-", file_name) ~ "Developing faster indicators of transport activity",
-        grepl("car-practical-test-pass-rates-", file_name) ~ "Developing faster indicators of transport activity",
-        grepl("weekly-haulier-testing.ods", file_name) ~ "Developing faster indicators of transport activity",
-        grepl("COVID-19-transport-use-statistics.ods", file_name) ~ "Daily domestic transport use by mode",
-        TRUE ~ collection),
-      collection_url = dplyr::case_when(
-        grepl("Monthly_public_EV_chargers_by_region_and_country_UK", file_name) ~ "https://www.gov.uk/government/statistics/developing-faster-indicators-of-transport-activity",
-        grepl("large-goods-vehicle-vocational-testing-", file_name) ~ "https://www.gov.uk/government/statistics/developing-faster-indicators-of-transport-activity",
-        grepl("car-practical-test-pass-rates-", file_name) ~ "https://www.gov.uk/government/statistics/developing-faster-indicators-of-transport-activity",
-        grepl("weekly-haulier-testing.ods", file_name) ~ "https://www.gov.uk/government/statistics/developing-faster-indicators-of-transport-activity",
-        grepl("COVID-19-transport-use-statistics.ods", file_name) ~ "https://www.gov.uk/government/statistics/transport-use-during-the-coronavirus-covid-19-pandemic",
-        TRUE ~ collection_url))
+                  collection = gsub("covid 19", "(COVID-19)", collection))
 }
