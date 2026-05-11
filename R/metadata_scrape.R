@@ -64,12 +64,21 @@ download_cover <- function(df_name, bucket_name = "tin_dev_data_storage") {
     ##Get emails
     emails <- cover_info %>%
       dplyr::filter(!is.na(column1)) %>%
-      ##Let's try and detect dates generally
-      dplyr::filter(grepl("email", column1, ignore.case = TRUE)) %>%
+      ## filter for email addresses that might include a colon at the start of them
+      dplyr::filter(grepl("[A-Za-z0-9._%+-]+@dft.gov.uk|:[A-Za-z0-9._%+-]+@dft.gov.uk", 
+                          column1, 
+                          ignore.case = TRUE)) %>%
+      # if there is a colon, information prior to the email is available
+      dplyr::mutate(column1 = ifelse(grepl(":", column1, ignore.case = TRUE),
+                                     column1,
+                                     # otherwise, include for the dataframe
+                                     paste0("Email:", column1))) %>% 
       tidyr::separate(col = column1,
                       sep = ":",
                       into = c("text", "info")) %>%
-      dplyr::mutate(source = df_name)
+      # replace any other information that was before the address with "Email" for consistency
+      dplyr::mutate(text = ifelse(grepl("email:", text, ignore.case = TRUE), text, "Email"),
+                    source = df_name)
 
     ##Get rid of na values
     dates <- cover_info %>%
@@ -90,7 +99,8 @@ download_cover <- function(df_name, bucket_name = "tin_dev_data_storage") {
             column1
           )
       )) %>%
-      dplyr::mutate(source = df_name, text = as.character(column1)) %>%
+      dplyr::mutate(source = df_name, 
+                    text = as.character(column1)) %>%
       dplyr::select(-column1)
 
     info <- bind_rows(emails, dates)
@@ -160,17 +170,14 @@ extract_metadata <- function(bucket_name = "tin_dev_data_storage") {
     dplyr::filter(!is.na(info)) %>%
     dplyr::mutate(
       text = dplyr::case_when(
+        # capture any mention of the following for the metadata extraction
         grepl("email", text, ignore.case = TRUE) ~ "email",
         grepl("next|(provisional update)", text, ignore.case = TRUE) ~ "next_update",
-        grepl("updated|(This data table was published on)", text, ignore.case = TRUE) ~ "last_update",
-        grepl("published on", text, ignore.case = TRUE) ~ "last_update"
-      )
-    ) %>%
+        grepl("updated|(This data table was published on)|Last update|published on", 
+              text, ignore.case = TRUE) ~ "last_update")) %>%
     dplyr::filter(!is.na(text)) %>%
     unique() %>%
     tidyr::pivot_wider(names_from = "text", values_from = "info")
 
   return(all_updates)
 }
-
-
